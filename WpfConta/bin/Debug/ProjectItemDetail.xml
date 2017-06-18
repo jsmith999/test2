@@ -1,0 +1,56 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="ProjectItemDetail" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="ProjectItemDetail">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Key" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+                <xs:element name="Project" type="xs:int" />
+                <xs:element name="Category" type="xs:int" />
+                <xs:element name="MaterialKey" type="xs:int" />
+                <xs:element name="Quantity" type="xs:double" />
+                <xs:element name="Observations" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="100" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Order" type="xs:int" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <ProjectItemDetail>
+    <Key>1</Key>
+    <Project>1234</Project>
+    <Category>1</Category>
+    <MaterialKey>123</MaterialKey>
+    <Quantity>1</Quantity>
+    <Observations>first item</Observations>
+    <Order>1</Order>
+  </ProjectItemDetail>
+  <ProjectItemDetail>
+    <Key>2</Key>
+    <Project>1234</Project>
+    <Category>1</Category>
+    <MaterialKey>234</MaterialKey>
+    <Quantity>2</Quantity>
+    <Order>2</Order>
+  </ProjectItemDetail>
+  <ProjectItemDetail>
+    <Key>3</Key>
+    <Project>1234</Project>
+    <Category>3</Category>
+    <MaterialKey>345</MaterialKey>
+    <Quantity>3</Quantity>
+    <Observations>last item</Observations>
+    <Order>1</Order>
+  </ProjectItemDetail>
+</NewDataSet>

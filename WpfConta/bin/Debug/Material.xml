@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Material" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Material">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Key" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+                <xs:element name="Name">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="MeasuringUnit">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="UnitPrice" type="xs:double" />
+                <xs:element name="Category" type="xs:int" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Material>
+    <Key>123</Key>
+    <Name>2 x 4</Name>
+    <MeasuringUnit>pcs</MeasuringUnit>
+    <UnitPrice>1.23</UnitPrice>
+    <Category>1</Category>
+  </Material>
+  <Material>
+    <Key>234</Key>
+    <Name>4 x 4</Name>
+    <MeasuringUnit>pcs</MeasuringUnit>
+    <UnitPrice>2.34</UnitPrice>
+    <Category>1</Category>
+  </Material>
+  <Material>
+    <Key>345</Key>
+    <Name>Crane</Name>
+    <MeasuringUnit>hours</MeasuringUnit>
+    <UnitPrice>3.45</UnitPrice>
+    <Category>3</Category>
+  </Material>
+</NewDataSet>

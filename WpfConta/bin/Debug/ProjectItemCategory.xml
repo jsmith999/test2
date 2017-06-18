@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Client" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="ProjectItemCategory">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Key" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+                <xs:element name="Name">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="IsDeleted" type="xs:boolean" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <ProjectItemCategory>
+    <Key>1</Key>
+    <Name>Materials</Name>
+    <IsDeleted>false</IsDeleted>
+  </ProjectItemCategory>
+  <ProjectItemCategory>
+    <Key>2</Key>
+    <Name>Men-Hours</Name>
+    <IsDeleted>true</IsDeleted>
+  </ProjectItemCategory>
+  <ProjectItemCategory>
+    <Key>3</Key>
+    <Name>Tools</Name>
+    <IsDeleted>false</IsDeleted>
+  </ProjectItemCategory>
+</NewDataSet>
+              

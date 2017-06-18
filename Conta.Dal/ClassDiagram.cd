@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Conta.DAL.BaseTableService&lt;TTable, TKey&gt;" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQUAAAAAAIAAAAAAAAAEABAAAEAAEAAAAAAAQCAQII=</HashCode>
+      <FileName>BaseTableService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.ComponentModel.DataAnnotations.ColumnAttribute" Collapsed="true">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ColumnAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.ComponentModel.DataAnnotations.KeyAttribute" Collapsed="true">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>KeyAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.ComponentModel.DataAnnotations.StringLengthAttribute" Collapsed="true">
+    <Position X="9" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>StringLengthAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.DAL.Model.Client" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Model\Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.DAL.Model.Employee">
+    <Position X="6.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAACAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Model\Employee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Dal.UiBase" BaseTypeListCollapsed="true">
+    <Position X="1.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABCAACAAAAAAAAAAAAAAAAgAAAAAAAAEABAAAAAAg=</HashCode>
+      <FileName>UiBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Conta.DAL.IDataClientService">
+    <Position X="9" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQQAAAAAAAAAAAQAAAAAAAAAAEAAEAAABAAAAAAAAI=</HashCode>
+      <FileName>IDataClientService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Conta.DAL.ITableService&lt;T&gt;">
+    <Position X="3" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQQAAAAAAAAAAAAAAAAAABAAAEAAEAAAAAAAAAAAAI=</HashCode>
+      <FileName>ITableService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Conta.Dal.IUiBase">
+    <Position X="3" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>UiBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Conta.DAL.Model.EmployeePosition" Collapsed="true">
+    <Position X="6.25" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAABCAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAABA=</HashCode>
+      <FileName>Model\EmployeePosition.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9.75" />
+</ClassDiagram>

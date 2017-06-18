@@ -1,0 +1,7 @@
+C:\sources\Conta\SqlDal\bin\Debug\SqlDal.dll
+C:\sources\Conta\SqlDal\bin\Debug\SqlDal.pdb
+C:\sources\Conta\SqlDal\bin\Debug\Conta.Dal.dll
+C:\sources\Conta\SqlDal\bin\Debug\Conta.Dal.pdb
+C:\sources\Conta\SqlDal\obj\Debug\SqlDal.dll
+C:\sources\Conta\SqlDal\obj\Debug\SqlDal.pdb
+C:\sources\Conta\SqlDal\obj\Debug\SqlDal.csprojResolveAssemblyReference.cache

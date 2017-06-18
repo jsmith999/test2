@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Conta.Model.BaseUiService&lt;TDal, TUiItem&gt;">
+    <Position X="1.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ACQQAAAAAAAAAAAQAAAAAAAAAAEEAEAAAFAAAAAAAAI=</HashCode>
+      <FileName>Model\BaseUiService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="cache" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Conta.Model.ClientService">
+    <Position X="3.25" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\UiClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiClient">
+    <Position X="7.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Model\UiClient.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="original" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Conta.Model.EmployeeService">
+    <Position X="0.5" Y="5.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\UiEmployee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiEmployee" Collapsed="true">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBEAACAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Model\UiEmployee.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="original" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Conta.Dal.UiBase">
+    <Position X="7" Y="2.25" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Conta.DAL.Model.Client">
+    <Position X="10.75" Y="5.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Conta.DAL.Model.Employee">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Conta.Dal.IUiBase" Collapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9.75" />
+</ClassDiagram>
