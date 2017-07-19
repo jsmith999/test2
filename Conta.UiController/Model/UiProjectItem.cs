@@ -6,132 +6,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using XmlDal.ServiceHandler;
 
 namespace Conta.Model {
-    /*
-    public interface IUiProjectItem : IUiBase {
-        bool HasDetails { get; set; }
-        int Key { get; }
-        string MeasuringUnit { get; set; }
-        string Name { get; set; }
-        string Observations { get; set; }
-        int Order { get; set; }
-        int Parent { get; }
-        double Quantity { get; set; }
-        double UnitPrice { get; set; }
-        bool IsRowVisible { get; }
-    }
-    
-    public abstract class UiProjectItem : UiBase, IUiProjectItem {
-        #region Service
-        private static ProjectItemService service;
-
-        public static IDataClientService Service { get { return service; } }
-
-        public static void InitService() {
-            if (service != null)
-                service = null; //Service.Dispose();
-            service = new ProjectItemService();
-        }
-        #endregion
-
-        protected readonly IUniformProjectGrid original;
-        protected UiProjectItem(IUniformProjectGrid original) { this.original = original; }
-
-        #region properties
-        [Browsable(false)]
-        public abstract int Key { get; }
-
-        [Browsable(false)]
-        bool isRowVisible = true;
-        public virtual bool IsRowVisible { get { return isRowVisible; } set { isRowVisible = value; } }
-
-        private bool hasDetails;
-        public virtual bool HasDetails {
-            get { return hasDetails; }
-            set { hasDetails = value; }
-        }
-
-        [ReadOnly(true)]
-        public virtual string Name {
-            get { return original.Name; }
-            set { }
-            //set { SetProp(original.Name, value, v => original.Name = v, "Name"); }
-        }
-
-        [ReadOnly(true)]
-        public virtual string MeasuringUnit {
-            get { return this.original.MeasuringUnit; }
-            set { }
-        }
-
-        public virtual double Quantity {
-            get { return original.Quantity; }
-            set { SetProp(original.Quantity, value, v => original.Quantity = v, "Quantity"); }
-        }
-
-        public virtual double UnitPrice {
-            get { return original.UnitPrice; }
-            set { SetProp(original.UnitPrice, value, v => original.UnitPrice = v, "UnitPrice"); }
-        }
-
-        public virtual double Value { get { return 0d; } }
-
-        public virtual string Observations {
-            get { return original.Observations; }
-            set { SetProp(original.Observations, value, v => original.Observations = v, "Observations"); }
-        }
-
-        [Browsable(false)]
-        public virtual int Parent { get { return original.Parent; } }
-
-        [Browsable(false)]
-        public virtual int Order {
-            get { return original.Order; }
-            set { SetProp(original.Order, value, v => original.Order = v, "Order"); }
-        }
-        #endregion
-
-        protected override IDataClientService GetService() { return Service; }
-
-        #region service implementation
-        class ProjectItemService : BaseUiService<IUniformProjectGrid, IUiProjectItem> {
-            internal ProjectItemService() : base(XmlDal.DataContext.ProjectItem) { }
-
-            public override System.Collections.ICollection GetList(string toSearch) {
-                var result = base.GetList(toSearch);
-
-                foreach (var item in cache)
-                    if (item is UiProjectItemDetail) {
-                        var itemDetail = item as UiProjectItemDetail;
-                        itemDetail.CategoryObject = cache.FirstOrDefault(x => (x as IUiProjectItem).Parent == itemDetail.Category && (x as IUiProjectItem).Order == 0) as UiProjectItemsCategory;
-                    }
-                return result;
-            }
-
-            protected override IUniformProjectGrid GetOriginal(IUiProjectItem item) {
-                if (item == null) throw new ArgumentNullException("original");
-
-                if (item is UiProjectItemsCategory) return (item as UiProjectItemsCategory).original;
-                if (item is UiProjectItemDetail) return (item as UiProjectItemDetail).original;
-
-                throw new NotImplementedException();
-            }
-
-            protected override IUiProjectItem Create(IUniformProjectGrid original) {
-                if (original == null) throw new ArgumentNullException("original");
-
-                if (original is ProjectItemCategory) return new UiProjectItemsCategory(original as ProjectItemCategory);
-                if (original is ProjectItemDetailMaterial) return new UiProjectItemDetail(original as ProjectItemDetailMaterial);
-
-                throw new NotImplementedException();
-            }
-        }
-        #endregion
-    }
-    /* */
     public class UiProjectItemsCategory : UiBase {
         #region Service
         private static ProjectItemsCategoryService service;
@@ -146,6 +25,7 @@ namespace Conta.Model {
         #endregion
 
         private readonly ProjectItemCategory original;
+        private BindingList<UiProjectItemDetail> details;
 
         public UiProjectItemsCategory(ProjectItemCategory original) : base() { this.original = original; }
 
@@ -172,7 +52,7 @@ namespace Conta.Model {
 
         public string Name { get { return IsDeleted ? /*string.Empty*/ "?" : original.Name; } }
 
-        public double Value { get { return 0d; } }  // TODO : calculate
+        public double Value { get; private set; } 
 
         [StringLength(100)]
         public string Observations {
@@ -191,7 +71,53 @@ namespace Conta.Model {
         }
 
         [Browsable(false)]
-        public ICollection /*IList<UiProjectItemDetail>*/ Details { get; private set; }
+        public BindingList<UiProjectItemDetail> Details {
+            get {
+                return details;
+            }
+
+            private set {
+                if (details != null) {
+                    details.ListChanged -= Details_ListChanged;
+                    foreach (var item in details)
+                        item.PropertyChanged -= Detail_PropertyChanged;
+                }
+
+                details = value;
+                //Debug.WriteLine("Recalculate : Details change");
+                Recalculate();
+                RaisePropertyChanged("Details");
+
+                if (details != null) {
+                    details.ListChanged += Details_ListChanged;
+                    foreach (var item in details)
+                        item.PropertyChanged += Detail_PropertyChanged;
+                }
+
+            }
+        }
+
+        private void Details_ListChanged(object sender, ListChangedEventArgs e) {
+            //Debug.WriteLine("Recalculate : Details change " + e.ListChangedType);
+            Recalculate();
+        }
+
+        private void Detail_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+            if (e.PropertyName == "Quantity" ||
+                e.PropertyName == "UnitPrice") {
+                //Debug.WriteLine("Recalculate : PropertyChanged change : "+ e.PropertyName);
+                Recalculate();
+            }
+        }
+
+        private void Recalculate() {
+            var total = 0d;
+            foreach (var item in details)
+                total += item.Value;
+
+            this.Value = total;
+            RaisePropertyChanged("Value");
+        }
 
         public override IDataClientService GetService() { return Service; }
 
@@ -209,7 +135,7 @@ namespace Conta.Model {
             public override ICollection GetList(IUiBase parent, string searchValue = null) {
                 if (parent == null || !(parent is UiProject))
                     return new List<ProjectItemCategory>();
-                
+
                 var result = base.GetList(parent);
                 var projectKey = (parent as UiProject).Id;
                 foreach (UiProjectItemsCategory item in cache)
@@ -261,6 +187,7 @@ namespace Conta.Model {
             }
 
             set {
+                //Debug.WriteLine("Quantity : {0} -> {1}", original.Quantity, value);
                 if (SetProp(original.Quantity, value, v => original.Quantity = v, "Quantity"))
                     RaisePropertyChanged("Value");
             }
@@ -279,6 +206,7 @@ namespace Conta.Model {
 
         public double Value { get { return UnitPrice * Quantity; } }
 
+        [StringLength(20)]
         public string Observations {
             get { return original.Observations; }
             set { SetProp(original.Observations, value, v => original.Observations = v, "Observations"); }
@@ -297,9 +225,9 @@ namespace Conta.Model {
         internal class ProjectItemDetailService : BaseUiService<ProjectItemDetailMaterial, UiProjectItemDetail> {
             internal ProjectItemDetailService() : base(XmlDal.DataContext.ProjectItemDetail, new KeyValuePair<string, Type>[] { }) { }
 
-            public List<UiProjectItemDetail> GetList(int project, int category) {
+            public BindingList<UiProjectItemDetail> GetList(int project, int category) {
                 var originals = (this.service as ProjectItemMaterialServiceHandler).GetList(project, category);
-                var result = new List<UiProjectItemDetail>();
+                var result = new BindingList<UiProjectItemDetail>();
                 foreach (var orig in originals)
                     result.Add(Create(orig));
 

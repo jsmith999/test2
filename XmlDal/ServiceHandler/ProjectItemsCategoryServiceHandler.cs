@@ -14,7 +14,7 @@ namespace XmlDal.ServiceHandler {
         #region TableService
         //public override IEnumerable<ProjectItemCategory> GetList(object parent) {
         //    var result = base.GetList(parent);
-            
+
         //    return result;
         //}
 
@@ -49,6 +49,11 @@ namespace XmlDal.ServiceHandler {
 
         public override int GetKeyValue(ProjectItemCategory item) {
             return item.Key;
+        }
+
+        protected override ProjectItemCategory DoDelete(ProjectItemCategory item) {
+            item.IsDeleted = true;
+            return Update(item) ? item : null;
         }
         #endregion
     }

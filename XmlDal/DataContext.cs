@@ -11,6 +11,7 @@ namespace XmlDal {
             ProjectItemDetail = new ProjectItemMaterialServiceHandler();
             //ProjectItem = new ProjectItemServiceHandler();
             Projects = new ProjectServiceHandler();
+            Materials = new MaterialServiceHandler();
         }
 
         public static ITableService<Employee> Employees { get; private set; }
@@ -19,5 +20,6 @@ namespace XmlDal {
         public static ITableService<ProjectItemDetailMaterial> ProjectItemDetail { get; private set; }
         //public static ITableService<IUniformProjectGrid> ProjectItem { get; private set; }
         public static ITableService<Project> Projects  { get; private set; }
+        public static ITableService<Material> Materials { get; private set; }
     }
 }

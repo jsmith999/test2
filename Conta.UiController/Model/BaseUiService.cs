@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq.Expressions;
 
 namespace Conta.Model {
@@ -13,7 +14,7 @@ namespace Conta.Model {
         where TUiItem : class, IUiBase {
 
         protected readonly ITableService<TDal> service;
-        protected List<IUiBase> cache = new List<IUiBase>();
+        protected ObservableCollection<TUiItem> cache;
 
         protected BaseUiService(ITableService<TDal> service,
             IEnumerable<KeyValuePair<string, Type>> childrenTypes) {
@@ -47,28 +48,44 @@ namespace Conta.Model {
 
         public event EventHandler<ChangeStatusEventArgs> UpdateStatus;
 
-        public virtual ICollection GetList(IUiBase parent, string searchValue = null) {
+        public virtual ICollection GetList(IUiBase parent, string searchValue = null)
+        {
             return GetList(service.GetList(parent == null ? null : (parent as UiBase).GetService().GetOriginal(parent), searchValue));
         }
 
-        public virtual ICollection GetList(LambdaExpression where = null, string toSearch = null) {
+        public virtual ICollection GetList(LambdaExpression where = null, string toSearch = null)
+        {
             var dalList = service.GetList(where, toSearch);
             return GetList(dalList);
         }
 
-        protected ICollection GetList(IEnumerable<TDal> dalList) {
-            // TODO : dispose of the old list
-            cache = new List<IUiBase>();
-            var result = new ObservableCollection<TUiItem>();
+        protected ICollection GetList(IEnumerable<TDal> dalList)
+        {
+            // dispose of the old list
+            if (cache!=null)
+                cache.CollectionChanged -= Cache_CollectionChanged;
+
+            cache = new ObservableCollection<TUiItem>();
             if (dalList != null) {
                 foreach (var item in dalList) {
                     var uiItem = Create(item);
                     cache.Add(uiItem);
-                    result.Add(uiItem);
                 }
             }
 
-            return result;
+            cache.CollectionChanged += Cache_CollectionChanged; // skip the initialization
+            return cache;
+        }
+
+        private void Cache_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            switch(e.Action)
+            {
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (TUiItem item in e.OldItems)
+                        this.Delete(item);
+                    break;
+            }
         }
 
         public IUiBase Create() {
@@ -99,14 +116,18 @@ namespace Conta.Model {
         //public IUiBase GetSelected() { return SelectedIndex < 0 ? null : cache[SelectedIndex]; }
 
         public virtual int GetIndex(IUiBase item) {
-            var search = GetOriginal(item as TUiItem);
+            var uiItem = item as TUiItem;
+            if (uiItem == null) return -1;
+            var search = GetOriginal(uiItem);
             return GetIndex(search);
         }
 
         private int GetIndex(TDal item) {
-            for (int result = 0; result < cache.Count; result++)
-                if (service.AreEqual(item, GetOriginal(cache[result] as TUiItem)))
-                    return result;
+            if (cache != null) {
+                for (int result = 0; result < cache.Count; result++)
+                    if (service.AreEqual(item, GetOriginal(cache[result] as TUiItem)))
+                        return result;
+            }
 
             return -1;
         }

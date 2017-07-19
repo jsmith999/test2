@@ -11,6 +11,7 @@ using Conta.Model;
 using System.Diagnostics;
 using Conta.Dal;
 using Conta.UiController.Controller;
+using System.Collections.ObjectModel;
 
 namespace Conta {
     public partial class frmMain : Form, IMainView {
@@ -42,6 +43,17 @@ namespace Conta {
                 theDataGridView.DataSource = value;
                 theBindingSource.DataSource = value;
             }
+        }
+
+        public void SetGridDataSource<T>(ObservableCollection<T> source)
+        {
+            theDataGridView.DataSource = source;
+            theBindingSource.DataSource = source;
+        }
+
+        public void SetGridDetailSource<T>(ObservableCollection<T> source)
+        {
+            throw new NotImplementedException();
         }
 
         public bool GridReadOnly { 
@@ -129,6 +141,27 @@ namespace Conta {
 
         private void DataAddNewMenu_Click(object sender, EventArgs e) {
             controller.AddNew();
+        }
+
+
+        public MessageActions ShowMessage(string title, string message, MessageActions action) {
+            throw new NotImplementedException();
+        }
+
+        public void SetSelection(IUiBase item) {
+            throw new NotImplementedException();
+        }
+
+        public void SetDetailSelection(IUiBase item) {
+            throw new NotImplementedException();
+        }
+
+        public void SetReports(IEnumerable<string> headers) {
+            throw new NotImplementedException();
+        }
+
+        public void ShowReport(string contents) {
+            throw new NotImplementedException();
         }
     }
 }

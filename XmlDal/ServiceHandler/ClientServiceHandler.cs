@@ -41,9 +41,5 @@ namespace XmlDal.ServiceHandler {
             Debug.Assert(results.Length <= 1);
             return results.Length == 0 ? null : results[0];
         }
-
-        protected override Client DoCreate() {
-            throw new System.NotImplementedException();
-        }
     }
 }

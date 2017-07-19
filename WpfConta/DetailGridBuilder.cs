@@ -11,11 +11,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
-using mws = Microsoft.Windows.Controls;
 
 namespace WpfConta {
     public class DetailGridBuilder : IDisposable {
-        public static DetailGridBuilder Build(Grid host, Border border, Type dataType, mws.DataGrid dataSourceGrid) {
+        public static DetailGridBuilder Build(Grid host, Border border, Type dataType, DataGrid dataSourceGrid) {
             var result = new DetailGridBuilder(host, border, dataSourceGrid);
             result.DoBuild(dataType);
             return result;
@@ -25,7 +24,7 @@ namespace WpfConta {
 
         private readonly Grid theGrid;
         private readonly Border border;
-        private readonly mws.DataGrid dataSourceGrid;
+        private readonly DataGrid dataSourceGrid;
         private readonly List<Record> DataSource;
 #if(CacheMeasurings)
         private readonly List<double> gridWidth = new List<double>();
@@ -33,7 +32,7 @@ namespace WpfConta {
 #endif
         private readonly Window window;
 
-        private DetailGridBuilder(Grid host, Border border, mws.DataGrid dataSourceGrid) {
+        private DetailGridBuilder(Grid host, Border border, DataGrid dataSourceGrid) {
             this.theGrid = host;
             this.border = border;
             this.dataSourceGrid = dataSourceGrid;

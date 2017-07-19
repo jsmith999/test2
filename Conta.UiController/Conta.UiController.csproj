@@ -33,6 +33,10 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +58,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HTMLReportEngine">
+      <HintPath>..\..\..\Users\eu\Downloads\HTMLReportEngine_src\bin\Release\HTMLReportEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -75,12 +82,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\BudgetReport.cs" />
     <Compile Include="Controller\IController.cs" />
+    <Compile Include="Controller\LookupBoundPropertyAttribute.cs" />
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="Model\BaseUiService.cs" />
     <Compile Include="Model\UiClient.cs" />
     <Compile Include="Model\UiEmployee.cs" />
+    <Compile Include="Model\UiMaterial.cs" />
     <Compile Include="Model\UiProject.cs" />
+    <Compile Include="Model\UiProjectCategory.cs" />
     <Compile Include="Model\UiProjectItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

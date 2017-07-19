@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -28,8 +29,20 @@ namespace Conta.DAL.Model {
         public int Project { get; set; }
         public virtual string Name { get; set; }
         public virtual string MeasuringUnit { get; set; }
+#if(DEBUG)
+        private double quantity;
+        public double Quantity {
+            get { return quantity; }
+            set {
+                //Debug.WriteLine("DAL Quantity : {0} -> {1}", quantity, value);
+                quantity = value;
+            }
+        }
+#else
         public double Quantity { get; set; }
+#endif
         public virtual double UnitPrice { get; set; }
+        [StringLength(20)]
         public string Observations { get; set; }
         [ForeignKey("ProjectCategory")]
         public int Category { get; set; }

@@ -23,13 +23,27 @@ namespace Conta.UiController.Controller {
         Locked,
     }
 
+    [Flags]
+    public enum MessageActions {
+        None = 0,
+        Ok = 1,
+        Yes = 2 * Ok,
+        No = 2 * Yes,
+        Cancel = 2 * No,
+    }
+
     public interface IMainView {
         object GridDataSource { set; }
         object GridDetailSource { set; }
         bool GridReadOnly { set; }
         int DetailDataSourceIndex { set; }
-        void SetRowStatus(int index, RowStatus status);
+        void SetRowStatus(int index, RowStatus status);     // TODO : remove (used in MainForms only)
         void SetDetail(Type type);
+        MessageActions ShowMessage(string title, string message, MessageActions action);
+        void SetSelection(IUiBase item);
+        void SetDetailSelection(IUiBase item);
+        void SetReports(IEnumerable<string> headers);
+        void ShowReport(string contents);
     }
 
     public class MainController : BaseController {
@@ -92,7 +106,7 @@ namespace Conta.UiController.Controller {
 
         public Action<ICollection> SetViewDataSource { get; set; }
 
-        public bool IsGlobalSearch { 
+        public bool IsGlobalSearch {
             get { return isGlobalSearch; }
             set { SetValue(ref isGlobalSearch, value, "IsGlobalSearch"); }
         }
@@ -113,13 +127,37 @@ namespace Conta.UiController.Controller {
             SelectionChanged(null);
 
             // add new item
-            var newItem = service.Create();
+            IUiBase newItem = null;
+            try {
+                newItem = service.Create();
+            } catch (Exception ex) {
+                Trace.TraceError("Add new item : " + ex.Message);
+            }
+
+            if (newItem == null) {
+                view.ShowMessage("Add Item", "Could not create a new line", MessageActions.Ok);
+                return;
+            }
 
             // select the new item
             var newIndex = service.GetIndex(newItem);
             Debug.Assert(newIndex >= 0);
-            SetDataSource(service.GetList());  // TODO : track filter, if any
+            RefreshData();
             SetDetailDataSourceIndex(newIndex);
+        }
+
+        private void RefreshData() {
+            SetDataSource(service.GetList());  // TODO : track filter, if any
+        }
+
+        public void DeleteSelection() {
+            var oldSelection = service.SelectedItem;
+            SelectionChanged(null);
+            var result = service.Delete(oldSelection);
+            if (result == null)
+                view.ShowMessage("Delete", "Could not delete the line", MessageActions.Ok);
+            else
+                RefreshData();
         }
 
         public bool CanClose() {
@@ -153,7 +191,19 @@ namespace Conta.UiController.Controller {
 
             if (type == typeof(UiProject)) {
                 UiProject.InitService();
-                SelectService(UiProject.Service, typeof(UiProject), parent);
+                SelectService(UiProject.Service, typeof(UiProject), parent, new[]{"Budgets"});
+                return;
+            }
+
+            if (type == typeof(UiMaterial)) {
+                UiMaterial.InitService();
+                SelectService(UiMaterial.Service, typeof(UiMaterial), parent);
+                return;
+            }
+
+            if (type == typeof(UiProjectCategory)) {
+                UiProjectCategory.InitService();
+                SelectService(UiProjectCategory.Service, typeof(UiProjectCategory), parent);
                 return;
             }
 
@@ -161,22 +211,24 @@ namespace Conta.UiController.Controller {
         }
 
         public virtual void SelectionChanged(IUiBase item) {
-            if (service.SelectedItem == item) return;
+            if (service.SelectedItem == item) return;   // re-selected the same item
 
             var oldSelection = service.SelectedItem;
             if (oldSelection != null) {
                 oldSelection.PropertyChanged -= Selection_PropertyChanged;
                 if (oldSelection.IsDirty) {
                     if (!oldSelection.Update()) {
-                        // TODO
-                        // show message "Could not update"
+                        view.ShowMessage("Delete", "Could not update the line", MessageActions.Ok);
                         // move selection back to it
+                        view.SetSelection(item);
+                        return;
                     }
                 }
 
                 view.SetRowStatus(service.GetIndex(oldSelection), oldSelection.IsLocked ? RowStatus.Locked : RowStatus.Normal);
             }
 
+            // set new selection
             service.SelectedItem = item;
 
             if (item == null) {
@@ -184,8 +236,9 @@ namespace Conta.UiController.Controller {
                 return;
             }
 
-            var index = service.GetIndex(item);
-            view.DetailDataSourceIndex = index;
+            // TODO pass the object, not the index
+            //var index = service.GetIndex(item);
+            //view.DetailDataSourceIndex = index;
             item.PropertyChanged += Selection_PropertyChanged;
             view.GridReadOnly = item.IsLocked;
         }
@@ -201,6 +254,11 @@ namespace Conta.UiController.Controller {
             var dataSource = service.GetList(parent, searchValue);
             RefreshService(dataSource);
         }
+
+        public void ExecuteReport(string header) {
+            if (header == "Budgets")
+                view.ShowReport(new BudgetReport().Create());
+        }
         #endregion
 
         #region helpers
@@ -209,7 +267,7 @@ namespace Conta.UiController.Controller {
             SetViewDataSource(dataSource);
         }
 
-        private void SelectService(IDataClientService newService, Type dataType, UiBase parent) {
+        private void SelectService(IDataClientService newService, Type dataType, UiBase parent, IEnumerable<string> reports = null) {
             service = newService;
             service.UpdateStatus += service_UpdateStatus;
             view.SetDetail(dataType);
@@ -217,6 +275,9 @@ namespace Conta.UiController.Controller {
             RefreshService(dataSource);
             RaisePropertyChanged("ForwardLinks");
             HasParent = parent != null;
+
+            if (reports != null)
+                view.SetReports(reports);
 
             // TODO : remove temporary hack
             if (dataType == typeof(UiEmployee))
@@ -269,7 +330,7 @@ namespace Conta.UiController.Controller {
         }
 
         private bool SetValue<T>(ref T current, T newValue, string propName) {
-            if (object.Equals(current, newValue)) 
+            if (object.Equals(current, newValue))
                 return false;
 
             current = newValue;
