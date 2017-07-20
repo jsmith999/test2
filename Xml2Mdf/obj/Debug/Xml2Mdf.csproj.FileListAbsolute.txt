@@ -1,0 +1,6 @@
+C:\Projects\Conta_git\Xml2Mdf\bin\Debug\Xml2Mdf.exe.config
+C:\Projects\Conta_git\Xml2Mdf\bin\Debug\Xml2Mdf.exe
+C:\Projects\Conta_git\Xml2Mdf\bin\Debug\Xml2Mdf.pdb
+C:\Projects\Conta_git\Xml2Mdf\obj\Debug\Xml2Mdf.csprojResolveAssemblyReference.cache
+C:\Projects\Conta_git\Xml2Mdf\obj\Debug\Xml2Mdf.exe
+C:\Projects\Conta_git\Xml2Mdf\obj\Debug\Xml2Mdf.pdb

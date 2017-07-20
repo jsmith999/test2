@@ -7,3 +7,6 @@ C:\sources\Conta\Conta.UiController\bin\Debug\XmlDal.pdb
 C:\sources\Conta\Conta.UiController\obj\Debug\Conta.UiController.dll
 C:\sources\Conta\Conta.UiController\obj\Debug\Conta.UiController.pdb
 C:\sources\Conta\Conta.UiController\obj\Debug\Conta.UiController.csprojResolveAssemblyReference.cache
+C:\Projects\Conta_git\Conta.UiController\obj\Debug\Conta.UiController.csprojResolveAssemblyReference.cache
+C:\Projects\Conta_git\Conta.UiController\obj\Debug\Conta.UiController.dll
+C:\Projects\Conta_git\Conta.UiController\obj\Debug\Conta.UiController.pdb

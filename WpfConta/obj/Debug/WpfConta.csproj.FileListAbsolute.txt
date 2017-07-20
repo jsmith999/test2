@@ -19,3 +19,12 @@ C:\sources\Conta\WpfConta\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\sources\Conta\WpfConta\obj\Debug\WpfConta_MarkupCompile.lref
 C:\sources\Conta\WpfConta\bin\Debug\WpfConta.exe.config
 C:\sources\Conta\WpfConta\obj\Debug\WpfConta.csprojResolveAssemblyReference.cache
+C:\Projects\Conta_git\WpfConta\obj\Debug\WpfConta.csprojResolveAssemblyReference.cache
+C:\Projects\Conta_git\WpfConta\obj\Debug\App.baml
+C:\Projects\Conta_git\WpfConta\obj\Debug\About.g.cs
+C:\Projects\Conta_git\WpfConta\obj\Debug\MainWdw.g.cs
+C:\Projects\Conta_git\WpfConta\obj\Debug\App.g.cs
+C:\Projects\Conta_git\WpfConta\obj\Debug\WpfConta_MarkupCompile.cache
+C:\Projects\Conta_git\WpfConta\obj\Debug\WpfConta_MarkupCompile.lref
+C:\Projects\Conta_git\WpfConta\obj\Debug\WpfConta.exe
+C:\Projects\Conta_git\WpfConta\obj\Debug\WpfConta.pdb

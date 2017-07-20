@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\sources\Conta\WpfConta\obj\Debug\
+C:\Projects\Conta_git\WpfConta\obj\Debug\
 WpfConta
 none
 false
 DEBUG;TRACE
-C:\sources\Conta\WpfConta\App.xaml
-1-1535419331
+C:\Projects\Conta_git\WpfConta\App.xaml
+2-2146344461
 
-7827005542
-17951964387
-MainWdw.xaml;
+82107189172
+17-1627535580
+About.xaml;MainWdw.xaml;
 
-False
+True
 

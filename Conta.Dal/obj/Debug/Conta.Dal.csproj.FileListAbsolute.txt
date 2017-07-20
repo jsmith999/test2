@@ -2,3 +2,8 @@ C:\sources\Conta\Conta.Dal\bin\Debug\Conta.Dal.dll
 C:\sources\Conta\Conta.Dal\bin\Debug\Conta.Dal.pdb
 C:\sources\Conta\Conta.Dal\obj\Debug\Conta.Dal.dll
 C:\sources\Conta\Conta.Dal\obj\Debug\Conta.Dal.pdb
+C:\Projects\Conta_git\Conta.Dal\bin\Debug\Conta.Dal.dll
+C:\Projects\Conta_git\Conta.Dal\bin\Debug\Conta.Dal.pdb
+C:\Projects\Conta_git\Conta.Dal\obj\Debug\Conta.Dal.csprojResolveAssemblyReference.cache
+C:\Projects\Conta_git\Conta.Dal\obj\Debug\Conta.Dal.dll
+C:\Projects\Conta_git\Conta.Dal\obj\Debug\Conta.Dal.pdb
