@@ -59,7 +59,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HTMLReportEngine">
-      <HintPath>..\..\..\Users\eu\Downloads\HTMLReportEngine_src\bin\Release\HTMLReportEngine.dll</HintPath>
+      <HintPath>..\HTMLReportEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
