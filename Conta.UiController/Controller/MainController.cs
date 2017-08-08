@@ -91,6 +91,9 @@ namespace Conta.UiController.Controller {
         private bool hasParent;
         private IUiBase parent;
 
+        private IUiBase associatedParent;
+        private string searchValue;
+
         public static ObservableCollection<UiProjectItemsCategory> ProjectData;
 
         public BaseController(IMainView view) {
@@ -147,7 +150,7 @@ namespace Conta.UiController.Controller {
         }
 
         private void RefreshData() {
-            SetDataSource(service.GetList());  // TODO : track filter, if any
+            SetDataSource(service.GetList(GetListParent(), searchValue));
         }
 
         public void DeleteSelection() {
@@ -169,6 +172,7 @@ namespace Conta.UiController.Controller {
             CloseCurrentService();
 
             CurrentType = type;
+            this.associatedParent = parent;
 
             if (type == typeof(UiClient)) {
                 UiClient.InitService();
@@ -191,7 +195,7 @@ namespace Conta.UiController.Controller {
 
             if (type == typeof(UiProject)) {
                 UiProject.InitService();
-                SelectService(UiProject.Service, typeof(UiProject), parent, new[]{"Budgets"});
+                SelectService(UiProject.Service, typeof(UiProject), parent, new[] { "Budgets" });
                 return;
             }
 
@@ -244,14 +248,16 @@ namespace Conta.UiController.Controller {
         }
 
         public void SetChildFilter(IUiBase parent) {
+            this.searchValue = string.Empty;
             this.parent = parent;
             HasParent = parent != null;
-            var dataSource = service.GetList(parent);
+            var dataSource = service.GetList(GetListParent());
             RefreshService(dataSource);
         }
 
         public void Search(string searchValue) {
-            var dataSource = service.GetList(parent, searchValue);
+            this.searchValue = searchValue;
+            var dataSource = service.GetList(GetListParent(), searchValue);
             RefreshService(dataSource);
         }
 
@@ -262,16 +268,25 @@ namespace Conta.UiController.Controller {
         #endregion
 
         #region helpers
+        protected IUiBase GetListParent() {
+            return this.parent != null ?
+                this.parent :
+                this.IsGlobalSearch ? null : this.associatedParent;
+        }
+
         protected virtual void SetDataSource(ICollection dataSource) {
             //view.GridDetailSource = dataSource;
             SetViewDataSource(dataSource);
         }
 
         private void SelectService(IDataClientService newService, Type dataType, UiBase parent, IEnumerable<string> reports = null) {
+            // reset filter
+            this.searchValue = string.Empty;
+
             service = newService;
             service.UpdateStatus += service_UpdateStatus;
             view.SetDetail(dataType);
-            var dataSource = service.GetList(parent);
+            var dataSource = service.GetList(GetListParent());
             RefreshService(dataSource);
             RaisePropertyChanged("ForwardLinks");
             HasParent = parent != null;
