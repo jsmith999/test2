@@ -1,28 +1,48 @@
-﻿using Conta.DAL.Model;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using Conta.DAL.Model;
 
 namespace XmlDal.ServiceHandler {
     class ProjectServiceHandler : TableService<Project, int> {
-        public const string TheTableName = "Project";
+        private ProjectStatusServiceHandler projectStatusServiceHandler;
+        private AddressServiceHandler addressServiceHandler;
+        private ClientServiceHandler clientServiceHandler;
 
-        internal ProjectServiceHandler()
-            : base() {
-            TableName = TheTableName;
-            KeyName = "Key";
+        public ProjectServiceHandler() {
+            TableName = "Project";
+            KeyName = "Id";
+
+            projectStatusServiceHandler = new ProjectStatusServiceHandler();
+            addressServiceHandler = new AddressServiceHandler();
+            clientServiceHandler = new ClientServiceHandler();
         }
 
         public override int GetKeyValue(Project item) { return item.Id; }
 
+        protected override DataRow FindRow(DataTable table, Project item) {
+            var results = table.Select("Id = " + item.Id);
+            Debug.Assert(results.Length <= 1);
+            return results.Length == 0 ? null : results[0];
+        }
+
         protected override void DataToModel(Project item, DataRow row) {
             item.Id = (int)row[0];
-            item.Name = row[1] as string;
-            item.Budget = (double)row[2];
-            item.ClientKey = (int)row[3];
+            item.Name = (string)row[1];
+            item.Price = (float)row[2];
+            item.StartDate = (DateTime)row[3];
+            item.EndDate = (DateTime)row[4];
+            item.StatusKey = (int)row[5];
+            item.Status = projectStatusServiceHandler.FromKey(item.StatusKey);
+            item.AddressKey = (int)row[6];
+            if (item.AddressKey != 0)
+                item.Address = addressServiceHandler.FromKey(item.AddressKey);
+            item.Receivable = (string)row[7];
+            item.AgeOfReceivable = (string)row[8];
+            item.ClientKey = (int)row[9];
+            if (item.ClientKey != 0)
+                item.Client = clientServiceHandler.FromKey(item.ClientKey);
         }
 
         protected override Project DataToModel(DataRow row) {
@@ -34,14 +54,25 @@ namespace XmlDal.ServiceHandler {
         protected override void ModelToData(Project item, DataRow row) {
             //row[0]=item.Id;
             row[1] = item.Name;
-            row[2] = item.Budget;
-            row[3] = item.ClientKey;
+            row[2] = item.Price;
+            row[3] = item.StartDate;
+            row[4] = item.EndDate;
+            row[5] = item.StatusKey;
+            row[6] = item.AddressKey;
+            row[7] = item.Receivable;
+            row[8] = item.AgeOfReceivable;
+            row[9] = item.ClientKey;
         }
 
-        protected override System.Data.DataRow FindRow(System.Data.DataTable table, Project item) {
-            var results = table.Select("id = " + item.Id);
-            Debug.Assert(results.Length <= 1);
-            return results.Length == 0 ? null : results[0];
+        protected override Project DoCreate() {
+            var result = base.DoCreate();
+            
+            // defaults
+            result.StatusKey = 0;
+            result.AddressKey = 0;
+            result.ClientKey = 0;
+
+            return result;
         }
     }
 }

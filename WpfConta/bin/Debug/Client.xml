@@ -1,24 +1,32 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version='1.0' standalone='yes'?>
 <NewDataSet>
-  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Client" msdata:UseCurrentLocale="true">
+  <xs:schema id='NewDataSet' xmlns='' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:msdata='urn:schemas-microsoft-com:xml-msdata'>
+    <xs:element name='NewDataSet' msdata:IsDataSet='true' msdata:MainDataTable='Client' msdata:UseCurrentLocale='true'>
       <xs:complexType>
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="Client">
+        <xs:choice minOccurs='0' maxOccurs='unbounded'>
+          <xs:element name='Client'>
             <xs:complexType>
               <xs:sequence>
-                <xs:element name="Id" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
-                <xs:element name="FirstName">
+                <xs:element name='id' type='xs:int'/>
+                <xs:element name='name'>
                   <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                      <xs:maxLength value="10" />
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='100' />
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
-                <xs:element name="LastName">
+                <xs:element name='surname'>
                   <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                      <xs:maxLength value="20" />
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='100' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name='address_id' type='xs:int'/>
+                <xs:element name='email'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='100' />
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
@@ -30,13 +38,24 @@
     </xs:element>
   </xs:schema>
   <Client>
-    <Id>123</Id>
-    <FirstName>Alpha</FirstName>
-    <LastName>Ana</LastName>
+    <id>1</id>
+    <name>Alpha</name>
+    <surname>Albert</surname>
+    <address_id>1</address_id>
+    <email>albert@alpha.com</email>
   </Client>
   <Client>
-    <Id>345</Id>
-    <FirstName>Charlie</FirstName>
-    <LastName>Costica</LastName>
+    <id>2</id>
+    <name>Bravo</name>
+    <surname>Berta</surname>
+    <address_id>2</address_id>
+    <email>berta@bravo.com</email>
+  </Client>
+  <Client>
+    <id>3</id>
+    <name>Charlie</name>
+    <surname>Chelsea</surname>
+    <address_id>3</address_id>
+    <email>chelsea@charlie.com</email>
   </Client>
 </NewDataSet>

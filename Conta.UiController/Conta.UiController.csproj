@@ -82,17 +82,55 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\BudgetReport.cs" />
-    <Compile Include="Controller\IController.cs" />
-    <Compile Include="Controller\LookupBoundPropertyAttribute.cs" />
-    <Compile Include="Controller\MainController.cs" />
+    <Compile Include="Controller\BudgetReport.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controller\IController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controller\LookupBoundPropertyAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controller\MainController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\BaseUiService.cs" />
-    <Compile Include="Model\UiClient.cs" />
-    <Compile Include="Model\UiEmployee.cs" />
-    <Compile Include="Model\UiMaterial.cs" />
-    <Compile Include="Model\UiProject.cs" />
-    <Compile Include="Model\UiProjectCategory.cs" />
-    <Compile Include="Model\UiProjectItem.cs" />
+    <Compile Include="Model\UiAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiAttach.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiClient.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiEmployee.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiMaterial.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiNote.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiPayment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiPhones.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiProject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiProjectCategory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiProjectItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\UiProjectStatus.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

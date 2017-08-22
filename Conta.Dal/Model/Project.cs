@@ -1,13 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Conta.DAL.Model {
-    public class Project {
+    public partial class Project {
+        public Project() { }
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public double Budget { get; set; }
-        [ForeignKey("Client")]
+        public float Price { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int StatusKey { get; set; }
+        public Conta.DAL.Model.ProjectStatus Status { get; set; }
+        public int AddressKey { get; set; }
+        public Conta.DAL.Model.Address Address { get; set; }
+        public string Receivable { get; set; }
+        public string AgeOfReceivable { get; set; }
         public int ClientKey { get; set; }
+        public Conta.DAL.Model.Client Client { get; set; }
     }
 }

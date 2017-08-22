@@ -1,4 +1,4 @@
-﻿using Conta.Dal;
+using Conta.Dal;
 using Conta.DAL;
 using Conta.DAL.Model;
 using System;
@@ -7,59 +7,71 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Conta.Model {
-    public class UiEmployee : UiBase {
+    public partial class UiEmployee : UiBase {
         #region Service
-        private static EmployeeService service;
+        private static TheService service;
 
         public static IDataClientService Service { get { return service; } }
 
         public static void InitService() {
             if (service != null)
-                service = null; //service.Dispose();
-            service = new EmployeeService();
+                service = null; //Service.Dispose();
+            service = new TheService();
         }
         #endregion
 
         internal readonly Employee original;
 
-        public UiEmployee(Employee original) {
+        public UiEmployee(Employee original)
+            : base() {
             this.original = original;
         }
-
+        
+        [Required()]
         [Browsable(false)]
         public int Id { get { return original.Id; } }
 
-        [DisplayName("First Name")]
-        [StringLength(10)]
-        public string FirstName {
-            get { return original.FirstName; }
-            set { SetProp(original.FirstName, value, x => original.FirstName = x, "FirstName"); }
+        [StringLength(100)]
+        [Required()]
+        public string Name {
+            get { return original.Name; }
+            set { SetProp(original.Name, value, v => original.Name = v, "Name"); }
         }
 
-        [StringLength(10)]
-        [DisplayName("Last Name")]
-        public string LastName {
-            get { return original.LastName; }
-            set { SetProp(original.LastName, value, x => original.LastName = x, "LastName"); }
+        [StringLength(20)]
+        [Required()]
+        [System.ComponentModel.DisplayName("Surname")]
+        public string Surname {
+            get { return original.Surname; }
+            set { SetProp(original.Surname, value, v => original.Surname = v, "Surname"); }
         }
 
-        [DisplayName("Date of Birth")]
+        [Required()]
+        [System.ComponentModel.DisplayName("Date Of Birth")]
         public DateTime DOB {
             get { return original.DOB; }
-            set { SetProp(original.DOB, value, x => original.DOB = x, "DOB"); }
+            set { SetProp(original.DOB, value, v => original.DOB = v, "DOB"); }
         }
 
-        public EmployeePosition Position {
-            get { return (EmployeePosition)original.Position; }
-            set { SetProp(original.Position, (int)value, x => original.Position = x, "Position"); }
+        [Required()]
+        public float Salary {
+            get { return original.Salary; }
+            set { SetProp(original.Salary, value, v => original.Salary = v, "Salary"); }
+        }
+
+        [Required()]
+        [System.ComponentModel.DisplayName("Hire Date")]
+        public DateTime HireDate {
+            get { return original.HireDate; }
+            set { SetProp(original.HireDate, value, v => original.HireDate = v, "HireDate"); }
         }
 
         public override IDataClientService GetService() { return Service; }
 
         #region service implementation
-        class EmployeeService : BaseUiService<Employee, UiEmployee> {
+        class TheService : BaseUiService<Employee, UiEmployee> {
 
-            public EmployeeService() : base(XmlDal.DataContext.Employees, new KeyValuePair<string, Type>[] { }) { }
+            internal TheService() : base(XmlDal.DataContext.Employees, new KeyValuePair<string, Type>[] { /*add forward refs here*/ }) { }
 
             protected override Employee GetOriginal(UiEmployee item) { return item.original; }
 
@@ -68,4 +80,3 @@ namespace Conta.Model {
         #endregion
     }
 }
-

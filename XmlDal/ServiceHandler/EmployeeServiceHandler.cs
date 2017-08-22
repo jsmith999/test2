@@ -14,10 +14,12 @@ namespace XmlDal.ServiceHandler {
 
         protected override void DataToModel(Employee item, DataRow row) {
             item.Id = (int)row[0];
-            item.FirstName = row[1] as string;
-            item.LastName = row[2] as string;
+            item.Name = row[1] as string;
+            item.Surname = row[2] as string;
             item.DOB = (DateTime)row[3];
-            item.Position = row[4] is DBNull ? 0 : (int)row[4];
+            item.Salary = (float)row[4];
+            item.HireDate = (DateTime)row[5];
+            //item.Position = row[4] is DBNull ? 0 : (int)row[4];
         }
 
         protected override Employee DataToModel(DataRow row) {
@@ -28,10 +30,11 @@ namespace XmlDal.ServiceHandler {
 
         protected override void ModelToData(Employee item, DataRow row) {
             //row[0]=item.Id;
-            row[1] = item.FirstName;
-            row[2] = item.LastName;
+            row[1] = item.Name;
+            row[2] = item.Surname;
             row[3] = item.DOB;
-            row[4] = item.Position;
+            row[4] = item.Salary;
+            row[5] = item.HireDate;
         }
 
         protected override DataRow FindRow(DataTable table, Employee item) {

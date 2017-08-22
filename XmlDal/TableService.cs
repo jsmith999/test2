@@ -3,12 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace XmlDal {
     public abstract class TableService<TTable, TKey> : Conta.DAL.BaseTableService<TTable, TKey> where TTable : class {
         private static List<PropertyInfo> properties = new List<PropertyInfo>();
+
+        protected LambdaExpression ByPrimaryKey<T>(T key, Type resultType, string keyName = "") {
+            if (string.IsNullOrWhiteSpace(keyName)) keyName = this.KeyName;
+
+            var fieldType = typeof(T);
+            var pe = Expression.Parameter(resultType);
+            var filterBody = Expression.Equal(Expression.Property(pe, keyName), Expression.Constant(key, fieldType));
+            var filter = Expression.Lambda(filterBody, new[] { pe });
+            return filter;
+        }
+
+        public TTable FromKey(TKey key) {
+            return GetList(ByPrimaryKey(key, typeof(TTable))).FirstOrDefault();
+        }
 
         protected override IEnumerable<TTable> DoGetList(LambdaExpression where = null, string toSearch = null) {
             var table = Load();

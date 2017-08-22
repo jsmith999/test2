@@ -1,29 +1,30 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version='1.0' standalone='yes'?>
 <NewDataSet>
-  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Employee" msdata:UseCurrentLocale="true">
+  <xs:schema id='NewDataSet' xmlns='' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:msdata='urn:schemas-microsoft-com:xml-msdata'>
+    <xs:element name='NewDataSet' msdata:IsDataSet='true' msdata:MainDataTable='Client' msdata:UseCurrentLocale='true'>
       <xs:complexType>
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="Employee">
+        <xs:choice minOccurs='0' maxOccurs='unbounded'>
+          <xs:element name='Employee'>
             <xs:complexType>
               <xs:sequence>
-                <xs:element name="Id" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
-                <xs:element name="FirstName">
+                <xs:element name='id' type='xs:int'/>
+                <xs:element name='name'>
                   <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                      <xs:maxLength value="10" />
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='100' />
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
-                <xs:element name="LastName">
+                <xs:element name='surname'>
                   <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                      <xs:maxLength value="20" />
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='20' />
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
-                <xs:element name="DOB" type="xs:dateTime" />
-                <xs:element name="Position" type="xs:int" minOccurs="0" />
+                <xs:element name='DOB' type='xs:dateTime' />
+                <xs:element name='salary' type='xs:float'/>
+                <xs:element name='hire_date' type='xs:dateTime' />
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -32,24 +33,27 @@
     </xs:element>
   </xs:schema>
   <Employee>
-    <Id>1234</Id>
-    <FirstName>Alpha</FirstName>
-    <LastName>Ana</LastName>
-    <DOB>1999-12-31T00:00:00-05:00</DOB>
-    <Position>1</Position>
+    <id>1</id>
+    <name>Alpha</name>
+    <surname>Ana</surname>
+    <DOB>1990-12-31T00:00:00</DOB>
+    <salary>12345</salary>
+    <hire_date>2017-01-01T00:00:00</hire_date>
   </Employee>
   <Employee>
-    <Id>2345</Id>
-    <FirstName>Bravo</FirstName>
-    <LastName>Bucur</LastName>
-    <DOB>2000-01-01T00:00:00-05:00</DOB>
-    <Position>2</Position>
+    <id>2</id>
+    <name>Bravo</name>
+    <surname>Barbu</surname>
+    <DOB>1990-12-31T00:00:00</DOB>
+    <salary>23456</salary>
+    <hire_date>2017-01-01T00:00:00</hire_date>
   </Employee>
   <Employee>
-    <Id>3456</Id>
-    <FirstName>Charlie</FirstName>
-    <LastName>Costica</LastName>
-    <DOB>1900-12-31T00:00:00-05:00</DOB>
-    <Position>3</Position>
+    <id>3</id>
+    <name>Charlie</name>
+    <surname>Costica</surname>
+    <DOB>1990-12-31T00:00:00</DOB>
+    <salary>34567</salary>
+    <hire_date>2017-01-01T00:00:00</hire_date>
   </Employee>
 </NewDataSet>

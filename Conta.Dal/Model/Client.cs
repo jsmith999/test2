@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
-//using Conta.DAL.ServiceHandler;
 
 namespace Conta.DAL.Model {
-    public class Client {
-        //static Client() { DataService.Registered.Add(typeof(Client), new ClientServiceHandler()); }
-
+    public partial class Client {
+        public Client() { }
         [Key]
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        private int AddressIdKey { get; set; }
+        public Conta.DAL.Model.Address Address { get; set; }
+        public int AddressId { get; set; }
+        public string Email { get; set; }
     }
 }

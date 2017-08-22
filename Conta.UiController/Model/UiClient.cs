@@ -7,48 +7,69 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Conta.Model {
-    public class UiClient : UiBase {
+    public partial class UiClient : UiBase {
         #region Service
-        private static ClientService service;
-        
+        private static TheService service;
+
         public static IDataClientService Service { get { return service; } }
-        
+
         public static void InitService() {
             if (service != null)
                 service = null; //Service.Dispose();
-            service = new ClientService();
+            service = new TheService();
         }
         #endregion
 
         internal readonly Client original;
 
-        public UiClient(Client original) :base() {
+        public UiClient(Client original)
+            : base() {
             this.original = original;
         }
 
+        [Required()]
         [Browsable(false)]
         public int Id { get { return original.Id; } }
 
-        [DisplayName("First Name")]
         [StringLength(100)]
-        public string FirstName {
-            get { return original.FirstName; }
-            set { SetProp(original.FirstName, value, x => original.FirstName = x, "FirstName"); }
+        [Required()]
+        public string Name {
+            get { return original.Name; }
+            set { SetProp(original.Name, value, v => original.Name = v, "Name"); }
         }
 
-        [DisplayName("Last Name")]
         [StringLength(100)]
-        public string LastName {
-            get { return original.LastName; }
-            set { SetProp(original.LastName, value, x => original.LastName = x, "LastName"); }
+        [Required()]
+        public string Surname {
+            get { return original.Surname; }
+            set { SetProp(original.Surname, value, v => original.Surname = v, "Surname"); }
+        }
+
+        [Required()]
+        [Browsable(false)]
+        public int AddressKey {
+            get { return original.AddressId; }
+            set { SetProp(original.AddressId, value, v => original.AddressId = v, "AddressKey"); }
+        }
+
+        public Address Address {
+            get { return original.Address; }
+            set { SetProp(original.Address, value, v => original.Address = v, "Address"); }
+        }
+
+        [StringLength(100)]
+        [Required()]
+        public string Email {
+            get { return original.Email; }
+            set { SetProp(original.Email, value, v => original.Email = v, "Email"); }
         }
 
         public override IDataClientService GetService() { return Service; }
 
         #region service implementation
-        class ClientService : BaseUiService<Client, UiClient> {
+        class TheService : BaseUiService<Client, UiClient> {
 
-            internal ClientService() : base(XmlDal.DataContext.Clients, new[] { new KeyValuePair<string, Type>("Poject", typeof(UiProject)) }) { }
+            internal TheService() : base(XmlDal.DataContext.Clients, new KeyValuePair<string, Type>[] { /*add forward refs here*/ }) { }
 
             protected override Client GetOriginal(UiClient item) { return item.original; }
 

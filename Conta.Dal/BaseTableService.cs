@@ -9,7 +9,7 @@ namespace Conta.DAL {
     public abstract class BaseTableService<TTable, TKey> : ITableService<TTable>
             where TTable : class {
         protected string TableName;
-        protected string KeyName;
+        protected string KeyName;   // not used
 
         public BaseTableService() {
             Broadcaster = new BroadcastService();

@@ -1,13 +1,13 @@
-﻿<?xml version="1.0" standalone="yes"?>
+<?xml version='1.0' standalone='yes'?>
 <NewDataSet>
-  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Client" msdata:UseCurrentLocale="true">
+  <xs:schema id='NewDataSet' xmlns='' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:msdata='urn:schemas-microsoft-com:xml-msdata'>
+    <xs:element name='NewDataSet' msdata:IsDataSet='true' msdata:MainDataTable='Client' msdata:UseCurrentLocale='true'>
       <xs:complexType>
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="Project">
+        <xs:choice minOccurs='0' maxOccurs='unbounded'>
+          <xs:element name='Project'>
             <xs:complexType>
               <xs:sequence>
-                <xs:element name="Id" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+                <xs:element name='Id' type='xs:int'/>
                 <xs:element name="Name">
                   <xs:simpleType>
                     <xs:restriction base="xs:string">
@@ -15,7 +15,25 @@
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
-                <xs:element name="Budget" type="xs:double"/>
+                <xs:element name='Price' type='xs:float'/>
+                <xs:element name='Start_date' type='xs:dateTime' />
+                <xs:element name='End_date' type='xs:dateTime' />
+                <xs:element name='StatusKey' type='xs:int'/>
+                <xs:element name='AddressKey' type='xs:int'/>
+                <xs:element name='Receivable'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='20' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name='AgeOfReceivable'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='20' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
                 <xs:element name="ClientKey" type="xs:int"/>
               </xs:sequence>
             </xs:complexType>
@@ -27,20 +45,37 @@
   <Project>
     <Id>1234</Id>
     <Name>Bathroom renovation</Name>
-    <Budget>7500</Budget>
-    <ClientKey>123</ClientKey>
+    <Price>7500</Price>
+    <Start_date>2017-01-01T00:00:00</Start_date>
+    <End_date>2017-01-31T00:00:00</End_date>
+    <StatusKey>0</StatusKey>
+    <AddressKey>1</AddressKey>
+    <Receivable>1234.56</Receivable>
+    <AgeOfReceivable/>
+    <ClientKey>1</ClientKey>
   </Project>
   <Project>
     <Id>2345</Id>
     <Name>IR defect detection</Name>
-    <Budget>75</Budget>
-    <ClientKey>234</ClientKey>
+    <Price>75</Price>
+    <Start_date>2017-02-01T00:00:00</Start_date>
+    <End_date>2017-02-28T00:00:00</End_date>
+    <StatusKey>1</StatusKey>
+    <AddressKey>2</AddressKey>
+    <Receivable>2345.67</Receivable>
+    <AgeOfReceivable/>
+    <ClientKey>2</ClientKey>
   </Project>
   <Project>
     <Id>3456</Id>
     <Name>Windows replacement</Name>
-    <Budget>17500</Budget>
-    <ClientKey>345</ClientKey>
+    <Price>17500</Price>
+    <Start_date>2017-03-01T00:00:00</Start_date>
+    <End_date>2017-03-31T00:00:00</End_date>
+    <StatusKey>2</StatusKey>
+    <AddressKey>3</AddressKey>
+    <Receivable>3456.78</Receivable>
+    <AgeOfReceivable/>
+    <ClientKey>3</ClientKey>
   </Project>
 </NewDataSet>
-              

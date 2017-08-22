@@ -7,16 +7,16 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Conta.Model {
-    public class UiProject : UiBase {
+    public partial class UiProject : UiBase {
         #region Service
-        private static ProjectService service;
+        private static TheService service;
 
         public static IDataClientService Service { get { return service; } }
 
         public static void InitService() {
             if (service != null)
                 service = null; //Service.Dispose();
-            service = new ProjectService();
+            service = new TheService();
         }
         #endregion
 
@@ -27,32 +27,64 @@ namespace Conta.Model {
             this.original = original;
         }
 
-        #region properties
+        [Required()]
         [Browsable(false)]
         public int Id { get { return original.Id; } }
 
-        [DisplayName("Project Name")]
-        [StringLength(20)]
+        [Required()]
+        [StringLength(100)]
         public string Name {
             get { return original.Name; }
-            set { SetProp(original.Name, value, x => original.Name = x, "Name"); }
+            set { SetProp(original.Name, value, v => original.Name = v, "Name"); }
         }
 
-        public double Budget {
-            get { return original.Budget; }
-            set { SetProp(original.Budget, value, x => original.Budget = x, "Budget"); }
+        public float Price {
+            get { return original.Price; }
+            set { SetProp(original.Price, value, v => original.Price = v, "Price"); }
         }
 
-        [Browsable(false)]
-        public int ClientKey { get { return original.ClientKey; } }
-        #endregion
+        [System.ComponentModel.DisplayName("Start Date")]
+        public DateTime StartDate {
+            get { return original.StartDate; }
+            set { SetProp(original.StartDate, value, v => original.StartDate = v, "StartDate"); }
+        }
+
+        [System.ComponentModel.DisplayName("End Date")]
+        public DateTime EndDate {
+            get { return original.EndDate; }
+            set { SetProp(original.EndDate, value, v => original.EndDate = v, "EndDate"); }
+        }
+
+        [Required()]
+        public ProjectStatus Status {
+            get { return original.Status; }
+            set { SetProp(original.Status, value, v => original.Status = v, "Status"); }
+        }
+
+        [Required()]
+        public Address Address {
+            get { return original.Address; }
+            set { SetProp(original.Address, value, v => original.Address = v, "Address"); }
+        }
+
+        [StringLength(20)]
+        public string Receivable {
+            get { return original.Receivable; }
+            set { SetProp(original.Receivable, value, v => original.Receivable = v, "Receivable"); }
+        }
+
+        [StringLength(20)]
+        public string AgeOfReceivable {
+            get { return original.AgeOfReceivable; }
+            set { SetProp(original.AgeOfReceivable, value, v => original.AgeOfReceivable = v, "AgeOfReceivable"); }
+        }
 
         public override IDataClientService GetService() { return Service; }
 
         #region service implementation
-        class ProjectService : BaseUiService<Project, UiProject> {
+        class TheService : BaseUiService<Project, UiProject> {
 
-            internal ProjectService() : base(XmlDal.DataContext.Projects, new KeyValuePair<string, Type>[] { }) { }
+            internal TheService() : base(XmlDal.DataContext.Projects, new KeyValuePair<string, Type>[] { /*add forward refs here*/ }) { }
 
             protected override Project GetOriginal(UiProject item) { return item.original; }
 
