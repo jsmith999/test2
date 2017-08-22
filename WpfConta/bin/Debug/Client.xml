@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0" standalone="yes"?>
 <NewDataSet>
   <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Client" msdata:UseCurrentLocale="true">
@@ -35,14 +35,8 @@
     <LastName>Ana</LastName>
   </Client>
   <Client>
-    <Id>234</Id>
-    <FirstName>Bravo</FirstName>
-    <LastName>Bucur</LastName>
-  </Client>
-  <Client>
     <Id>345</Id>
     <FirstName>Charlie</FirstName>
     <LastName>Costica</LastName>
   </Client>
 </NewDataSet>
-              
