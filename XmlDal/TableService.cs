@@ -92,6 +92,14 @@ namespace XmlDal {
                         newRow[col] = string.Empty;
                     else if (col.DataType == typeof(DateTime))
                         newRow[col] = DateTime.MinValue;
+                    else if (col.DataType == typeof(int))
+                        newRow[col] = 0;
+                    else if (col.DataType == typeof(float))
+                        newRow[col] = 0f;
+                    else if (col.DataType == typeof(double))
+                        newRow[col] = 0d;
+                    else if (col.DataType == typeof(bool))
+                        newRow[col] = false;
                     else
                         Debugger.Break();       // missed one
                 }

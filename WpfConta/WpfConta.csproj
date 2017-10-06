@@ -64,6 +64,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -87,7 +88,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoSelector.xaml.cs">
+      <DependentUpon>BoSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ButtonBreadcrumbs.xaml.cs">
+      <DependentUpon>ButtonBreadcrumbs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\IsNullConverter.cs" />
+    <Compile Include="ProjectGrid.xaml.cs">
+      <DependentUpon>ProjectGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SearchableGrid.xaml.cs">
+      <DependentUpon>SearchableGrid.xaml</DependentUpon>
+    </Compile>
     <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ButtonBreadcrumbs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -108,6 +130,14 @@
       <DependentUpon>MainWdw.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProjectGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SearchableGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DetailGridBuilder.cs" />

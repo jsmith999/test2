@@ -1,9 +1,11 @@
-﻿using Conta.Dal;
+﻿#define DetailsAsBindingList
+using Conta.Dal;
 using Conta.DAL;
 using Conta.DAL.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -25,8 +27,11 @@ namespace Conta.Model {
         #endregion
 
         private readonly ProjectItemCategory original;
+#if(DetailsAsBindingList)
         private BindingList<UiProjectItemDetail> details;
-
+#else
+        private ObservableCollection<UiProjectItemDetail> details;
+#endif
         public UiProjectItemsCategory(ProjectItemCategory original) : base() { this.original = original; }
 
         /*
@@ -52,7 +57,7 @@ namespace Conta.Model {
 
         public string Name { get { return IsDeleted ? /*string.Empty*/ "?" : original.Name; } }
 
-        public double Value { get; private set; } 
+        public double Value { get; private set; }
 
         [StringLength(100)]
         public string Observations {
@@ -69,7 +74,7 @@ namespace Conta.Model {
             get { return nameWidth; }
             set { SetProp(nameWidth, value, v => nameWidth = v, "NameWidth"); }
         }
-
+#if(DetailsAsBindingList)
         [Browsable(false)]
         public BindingList<UiProjectItemDetail> Details {
             get {
@@ -109,11 +114,55 @@ namespace Conta.Model {
                 Recalculate();
             }
         }
+#else
+        [Browsable(false)]
+        public ObservableCollection<UiProjectItemDetail> Details {
+            get {
+                return details;
+            }
+
+            private set {
+                if (details != null) {
+                    details.CollectionChanged -= details_CollectionChanged;
+                    foreach (var item in details)
+                        item.PropertyChanged -= Detail_PropertyChanged;
+                }
+
+                details = value;
+                //Debug.WriteLine("Recalculate : Details change");
+                Recalculate();
+                RaisePropertyChanged("Details");
+
+                if (details != null) {
+                    details.CollectionChanged += details_CollectionChanged;
+                    foreach (var item in details)
+                        item.PropertyChanged += Detail_PropertyChanged;
+                }
+            }
+        }
+
+        private void details_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+            Debug.WriteLine("Recalculate : Details change " + e.Action);
+            Recalculate();
+        }
+
+        private void Detail_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+            if (e.PropertyName == "Quantity" ||
+                e.PropertyName == "UnitPrice") {
+                //Debug.WriteLine("Recalculate : PropertyChanged change : "+ e.PropertyName);
+                Recalculate();
+            }
+        }
+#endif
+
+        [Browsable(false)]
+        public object SelectedDetail { get; set; }
 
         private void Recalculate() {
             var total = 0d;
-            foreach (var item in details)
-                total += item.Value;
+            if (details != null)
+                foreach (var item in details)
+                    total += item.Value;
 
             this.Value = total;
             RaisePropertyChanged("Value");
@@ -140,6 +189,7 @@ namespace Conta.Model {
                 var projectKey = (parent as UiProject).Id;
                 foreach (UiProjectItemsCategory item in cache)
                     item.Details = (UiProjectItemDetail.Service as UiProjectItemDetail.ProjectItemDetailService).GetList(projectKey, item.original.Key);   // TODO : pass the project!
+                    //item.Details = new ObservableCollection<UiProjectItemDetail>((UiProjectItemDetail.Service as UiProjectItemDetail.ProjectItemDetailService).GetList(projectKey, item.original.Key));   // TODO : pass the project!
                 return result;
             }
 
@@ -167,7 +217,7 @@ namespace Conta.Model {
         public static IDataClientService Service = new ProjectItemDetailService();
         #endregion
 
-        private readonly ProjectItemDetailMaterial original;
+        public readonly ProjectItemDetailMaterial original;
 
         public UiProjectItemDetail(ProjectItemDetailMaterial original) : base() { this.original = original; }
 
@@ -217,6 +267,14 @@ namespace Conta.Model {
 
         //[Browsable(false)]
         //public int MaterialKey { get { return original.Material.Key; } }
+        [Browsable(false)]
+        public UiMaterial Material {
+            //get { return original.Material; }
+            set {
+                original.Material = value.original;
+                original.MaterialKey = value.original.Key;
+            }
+        }
         #endregion
 
         public override IDataClientService GetService() { return Service; }

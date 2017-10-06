@@ -56,6 +56,9 @@ namespace Conta.Model {
         }
         #endregion
 
+        public override string ToString() {
+            return string.Format("[{0}] {1}", Category, Name);
+        }
         public override IDataClientService GetService() { return Service; }
 
         #region service implementation

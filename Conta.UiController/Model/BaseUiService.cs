@@ -48,21 +48,18 @@ namespace Conta.Model {
 
         public event EventHandler<ChangeStatusEventArgs> UpdateStatus;
 
-        public virtual ICollection GetList(IUiBase parent, string searchValue = null)
-        {
+        public virtual ICollection GetList(IUiBase parent, string searchValue = null) {
             return GetList(service.GetList(parent == null ? null : (parent as UiBase).GetService().GetOriginal(parent), searchValue));
         }
 
-        public virtual ICollection GetList(LambdaExpression where = null, string toSearch = null)
-        {
+        public virtual ICollection GetList(LambdaExpression where = null, string toSearch = null) {
             var dalList = service.GetList(where, toSearch);
             return GetList(dalList);
         }
 
-        protected ICollection GetList(IEnumerable<TDal> dalList)
-        {
+        protected ICollection GetList(IEnumerable<TDal> dalList) {
             // dispose of the old list
-            if (cache!=null)
+            if (cache != null)
                 cache.CollectionChanged -= Cache_CollectionChanged;
 
             cache = new ObservableCollection<TUiItem>();
@@ -77,10 +74,8 @@ namespace Conta.Model {
             return cache;
         }
 
-        private void Cache_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            switch(e.Action)
-            {
+        private void Cache_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+            switch (e.Action) {
                 case NotifyCollectionChangedAction.Remove:
                     foreach (TUiItem item in e.OldItems)
                         this.Delete(item);
@@ -90,7 +85,7 @@ namespace Conta.Model {
 
         public IUiBase Create() {
             var result = Create(service.Create());
-            cache.Add(result);
+            if (cache != null) cache.Add(result);
             return result;
         }
 

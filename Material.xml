@@ -56,5 +56,12 @@
     <UnitPrice>3.45</UnitPrice>
     <Category>3</Category>
   </Material>
+  <Material>
+    <Key>456</Key>
+    <Name>2 x 8</Name>
+    <MeasuringUnit>pcs</MeasuringUnit>
+    <UnitPrice>4.56</UnitPrice>
+    <Category>1</Category>
+  </Material>
 </NewDataSet>
               

@@ -36,7 +36,8 @@ namespace Conta.UiController.Controller {
         object GridDataSource { set; }
         object GridDetailSource { set; }
         bool GridReadOnly { set; }
-        int DetailDataSourceIndex { set; }
+        //int DetailDataSourceIndex { set; }
+        IUiBase DetailSelection { set; }
         void SetRowStatus(int index, RowStatus status);     // TODO : remove (used in MainForms only)
         void SetDetail(Type type);
         MessageActions ShowMessage(string title, string message, MessageActions action);
@@ -45,26 +46,27 @@ namespace Conta.UiController.Controller {
         void SetReports(IEnumerable<string> headers);
         void ShowReport(string contents);
     }
-
+    /*
     public class MainController : BaseController {
+        private new IDetailCustomView view;
 
         public MainController(IMainView view) : base(view) { }
 
-        public IController DetailController { get; private set; }
+        public IDataController DetailController { get; private set; }
 
-        public override void SetDataType(Type type, UiBase parent) {
-            if (type == typeof(UiProject)) {
-                DetailController = new BaseController(view);
-                DetailController.SetViewDataSource = x => this.view.GridDetailSource = x;
-                DetailController.SetDataType(typeof(UiProjectItemsCategory), parent);
-            } else {
-                if (DetailController != null)
-                    view.GridDetailSource = null;
-                DetailController = null;
-            }
+        //public override void SetDataType(Type type, UiBase parent) {
+        //    if (type == typeof(UiProject)) {
+        //        DetailController = new BaseController(view);
+        //        DetailController.SetViewDataSource = x => this.view.GridDetailSource = x;
+        //        DetailController.SetDataType(typeof(UiProjectItemsCategory), parent);
+        //    } else {
+        //        if (DetailController != null)
+        //            view.GridDetailSource = null;
+        //        DetailController = null;
+        //    }
 
-            base.SetDataType(type, parent);
-        }
+        //    base.SetDataType(type, parent);
+        //}
 
         public override void SelectionChanged(IUiBase item) {
             if (DetailController != null) {
@@ -83,8 +85,8 @@ namespace Conta.UiController.Controller {
             view.GridDataSource = dataSource;
         }
     }
-
-    public class BaseController : IController {
+    /* */
+    public class MainController : IDataController {
         protected readonly IMainView view;
         private IDataClientService service;
         private bool isGlobalSearch;
@@ -96,17 +98,16 @@ namespace Conta.UiController.Controller {
 
         public static ObservableCollection<UiProjectItemsCategory> ProjectData;
 
-        public BaseController(IMainView view) {
+        public MainController(IMainView view) {
             if (view == null)
                 throw new ArgumentNullException("view");
 
             this.view = view;
             this.SetViewDataSource = x => this.view.GridDataSource = x;
+            MainBusinessObjectType = new ObservableService<Type>();
         }
 
         #region properties
-        public Type CurrentType { get; private set; }
-
         public Action<ICollection> SetViewDataSource { get; set; }
 
         public bool IsGlobalSearch {
@@ -120,100 +121,71 @@ namespace Conta.UiController.Controller {
         }
 
         public IEnumerable<KeyValuePair<string, Type>> ForwardLinks { get { return service == null ? null : service.ChildrenTypes; } }
+
+        public IObservableService<Type> MainBusinessObjectType { get; private set; }
+        
+        public IDataController DataController { get; set; }
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         #region API
-        public void AddNew() {
-            // update current, if necessary
-            SelectionChanged(null);
-
-            // add new item
-            IUiBase newItem = null;
-            try {
-                newItem = service.Create();
-            } catch (Exception ex) {
-                Trace.TraceError("Add new item : " + ex.Message);
-            }
-
-            if (newItem == null) {
-                view.ShowMessage("Add Item", "Could not create a new line", MessageActions.Ok);
-                return;
-            }
-
-            // select the new item
-            var newIndex = service.GetIndex(newItem);
-            Debug.Assert(newIndex >= 0);
-            RefreshData();
-            SetDetailDataSourceIndex(newIndex);
-        }
-
         private void RefreshData() {
             SetDataSource(service.GetList(GetListParent(), searchValue));
-        }
-
-        public void DeleteSelection() {
-            var oldSelection = service.SelectedItem;
-            SelectionChanged(null);
-            var result = service.Delete(oldSelection);
-            if (result == null)
-                view.ShowMessage("Delete", "Could not delete the line", MessageActions.Ok);
-            else
-                RefreshData();
         }
 
         public bool CanClose() {
             CloseCurrentService();
             return true;
         }
-
+#if(false)
         public virtual void SetDataType(Type type, UiBase parent) {
             CloseCurrentService();
 
             CurrentType = type;
             this.associatedParent = parent;
 
-            if (type == typeof(UiClient)) {
-                UiClient.InitService();
-                SelectService(UiClient.Service, typeof(UiClient), parent);
-                return;
-            }
+            //if (type == typeof(UiClient)) {
+            //    UiClient.InitService();
+            //    SelectService(UiClient.Service, typeof(UiClient), parent);
+            //    return;
+            //}
 
-            if (type == typeof(UiEmployee)) {
-                UiEmployee.InitService();
-                SelectService(UiEmployee.Service, typeof(UiEmployee), parent);
-                return;
-            }
+            //if (type == typeof(UiEmployee)) {
+            //    UiEmployee.InitService();
+            //    SelectService(UiEmployee.Service, typeof(UiEmployee), parent);
+            //    return;
+            //}
 
-            if (type == typeof(UiProjectItemsCategory)) {
-                // only as DetailController
-                UiProjectItemsCategory.InitService();
-                SelectService(UiProjectItemsCategory.Service, typeof(UiProjectItemsCategory), parent);
-                return;
-            }
+            //if (type == typeof(UiProjectItemsCategory)) {
+            //    // only as DetailController
+            //    UiProjectItemsCategory.InitService();
+            //    SelectService(UiProjectItemsCategory.Service, typeof(UiProjectItemsCategory), parent);
+            //    return;
+            //}
 
-            if (type == typeof(UiProject)) {
-                UiProject.InitService();
-                SelectService(UiProject.Service, typeof(UiProject), parent, new[] { "Budgets" });
-                return;
-            }
+            //if (type == typeof(UiProject)) {
+            //    UiProject.InitService();
+            //    SelectService(UiProject.Service, typeof(UiProject), parent, new[] { "Budgets" });
+            //    return;
+            //}
 
-            if (type == typeof(UiMaterial)) {
-                UiMaterial.InitService();
-                SelectService(UiMaterial.Service, typeof(UiMaterial), parent);
-                return;
-            }
+            //if (type == typeof(UiMaterial)) {
+            //    UiMaterial.InitService();
+            //    SelectService(UiMaterial.Service, typeof(UiMaterial), parent);
+            //    return;
+            //}
 
-            if (type == typeof(UiProjectCategory)) {
-                UiProjectCategory.InitService();
-                SelectService(UiProjectCategory.Service, typeof(UiProjectCategory), parent);
-                return;
-            }
+            //if (type == typeof(UiProjectCategory)) {
+            //    UiProjectCategory.InitService();
+            //    SelectService(UiProjectCategory.Service, typeof(UiProjectCategory), parent);
+            //    return;
+            //}
 
             // TODO : throw an exception
-        }
 
+        }
+#endif
         public virtual void SelectionChanged(IUiBase item) {
             if (service.SelectedItem == item) return;   // re-selected the same item
 
@@ -236,7 +208,7 @@ namespace Conta.UiController.Controller {
             service.SelectedItem = item;
 
             if (item == null) {
-                view.DetailDataSourceIndex = -1;
+                view.DetailSelection = null;
                 return;
             }
 
@@ -340,8 +312,8 @@ namespace Conta.UiController.Controller {
                 view.SetRowStatus(index, RowStatus.Normal);
         }
 
-        private void SetDetailDataSourceIndex(int index) {
-            view.DetailDataSourceIndex = index;
+        private void SetDetailDataSource(IUiBase selection) {
+            view.DetailSelection = selection;
         }
 
         private bool SetValue<T>(ref T current, T newValue, string propName) {

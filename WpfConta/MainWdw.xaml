@@ -4,7 +4,7 @@
     xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
     xmlns:dg="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
     xmlns:local="clr-namespace:WpfConta"
-    Title="Conta" Height="300" Width="500">
+    Title="Conta" Height="500" Width="600">
 
     <Window.Resources>
         <!--<local:ProjectItemVisibilityConverter x:Key="ProjectItemVisibilityConverter"/>-->
@@ -23,19 +23,14 @@
             <MenuItem Header="_File">
                 <MenuItem Name="FileExitMenu" Header="E_xit" Click="FileExitMenu_Click"/>
             </MenuItem>
-            <MenuItem Header="_Jump to...">
-                <MenuItem Name="JumpToClient" Header="_Clients" Click="JumpToClient_Click"/>
-                <MenuItem Name="JumpToEmployee" Header="_Employee" Click="JumpToEmployee_Click"/>
-                <MenuItem Name="JumpToProject" Header="_Project" Click="JumpToProject_Click"/>
-                <MenuItem Name="JumpToMaterials" Header="_Materials" Click="JumpToMaterials_Click"/>
-                <MenuItem Name="JumpToProjectCategories" Header="_ProjectCategories" Click="JumpToProjectCategories_Click"/>
-                <Separator/>
+            <MenuItem Name="BusinessObjectsRoot" Header="_Jump to..."/>
+            <!--<Separator/>
                 <MenuItem Name="JumpBack" Header="_Back" Command="local:CustomCommands.Back">
                     <MenuItem.CommandBindings>
                         <CommandBinding Command="local:CustomCommands.Back" Executed="Back_Executed" CanExecute="Back_CanExecute" />
                     </MenuItem.CommandBindings>
-                </MenuItem>
-            </MenuItem>
+            </MenuItem>-->
+
             <MenuItem Name="Reports" Header="_Reports" >
                 <MenuItem.Resources>
                     <Style TargetType="MenuItem" x:Name="DisabledEmptyMenu">
@@ -53,6 +48,9 @@
                 <MenuItem Name="AboutMenu" Header="About..." Click="AboutMenu_Click"/>
             </MenuItem>
         </Menu>
+
+        <local:ButtonBreadcrumbs DockPanel.Dock="Top" x:Name="BreadCrumbs"/>
+        
         <!-- dont : IsHitTestVisible="False" -->
         <TabControl Name="FunctionTab" BorderThickness="0" Focusable="False" 
                     HorizontalContentAlignment="Stretch" Padding="0" 
@@ -62,6 +60,11 @@
             </TabControl.BorderBrush>
             <TabItem Name="DataTab">
                 <DockPanel Name="DataContent" LastChildFill="True" Visibility="Visible">
+                    <Border Name="DetailBorder" DockPanel.Dock="Bottom">
+                        <Grid Name="DetailsGrid" AutomationProperties.Name="DetailsGrid" Margin="2" />
+                    </Border>
+
+                    <!--<DockPanel LastChildFill="True">
                     <Grid Name="SearchContainer" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -72,11 +75,11 @@
                         <StackPanel Orientation="Horizontal">
                             <Button Name="AddItem" Margin="5,2" Width="20" ToolTip="Add a new line" Click="AddItem_Click">
                                 <TextBlock FontSize="16" FontWeight="Bold"> +</TextBlock>
-                                <!-- TODO : add visibility -->
+                                --><!-- TODO : add visibility --><!--
                             </Button>
                             <Button Name="DelItem" Margin="5,2" Width="20" ToolTip="Delete selected line" Click="DelItem_Click">
                                 <TextBlock FontSize="16" FontWeight="Bold"> -</TextBlock>
-                                <!-- TODO : add visibility -->
+                                --><!-- TODO : add visibility --><!--
                             </Button>
 
                         </StackPanel>
@@ -111,12 +114,7 @@
                         </CheckBox>
                     </Grid>
 
-                    <Border Name="DetailBorder" DockPanel.Dock="Bottom">
-                        <Grid Name="DetailsGrid" AutomationProperties.Name="DetailsGrid" Margin="2" />
-                    </Border>
-
-                    <DockPanel LastChildFill="True">
-                        <!-- DisplayMemberPath="Value" -->
+                        --><!-- DisplayMemberPath="Value" --><!--
                         <ListView Name="ForwardList" DockPanel.Dock="Right" ItemsSource="{Binding ForwardLinks}"  Margin="2" SelectionMode="Single" IsTextSearchEnabled="False">
                             <ListView.ItemTemplate>
                                 <ItemContainerTemplate>
@@ -124,111 +122,6 @@
                                 </ItemContainerTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-
-                        <dg:DataGrid Name="projectGrid" AutoGenerateColumns="False" MinRowHeight="20" DockPanel.Dock="Bottom"
-                             ItemsSource="{Binding ., NotifyOnValidationError=True, UpdateSourceTrigger=LostFocus,  ValidatesOnDataErrors=True}" 
-                             SelectionChanged="projectGrid_SelectionChanged"
-                             ClipToBounds="False" IsTabStop="True" IsTextSearchEnabled="True"
-                             SelectionMode="Extended" CanUserResizeRows="False" IsReadOnly="False" 
-                             RowDetailsVisibilityMode="Collapsed">
-
-                            <dg:DataGrid.Resources>
-                                <Style x:Key="ColumnHeaderGripperStyle" TargetType="{x:Type Thumb}">
-                                    <Setter Property="Width" Value="8"/>
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Cursor" Value="SizeWE"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type Thumb}">
-                                                <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}"/>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-
-                                <!--<Style TargetType="primitives:DataGridColumnHeader"  x:Key="columnHeaderStyle" >
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type primitives:DataGridColumnHeader}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <dg:DataGridHeaderBorder SortDirection="{TemplateBinding SortDirection}"
-                                                         IsHovered="{TemplateBinding IsMouseOver}"
-                                                         IsPressed="{TemplateBinding IsPressed}"
-                                                         IsClickable="{TemplateBinding CanUserSort}"
-                                                         Background="{TemplateBinding Background}"
-                                                         BorderBrush="{TemplateBinding BorderBrush}"
-                                                         BorderThickness="{TemplateBinding BorderThickness}"
-                                                         Padding ="{TemplateBinding Padding}"
-                                                         SeparatorVisibility="{TemplateBinding SeparatorVisibility}"
-                                                         SeparatorBrush="{TemplateBinding SeparatorBrush}"
-                                                         Grid.ColumnSpan="2"/>
-                                            <ContentPresenter Margin="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
-                                            <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" 
-                                   Style="{StaticResource ColumnHeaderGripperStyle}"/>
-                                            <Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right"  Grid.Column="1"
-                                   Style="{StaticResource ColumnHeaderGripperStyle}"/>
-                                        </Grid>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="DisplayIndex" Value="0">
-                                                <Setter Property="Visibility" Value="Collapsed" TargetName="PART_LeftHeaderGripper"></Setter>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>-->
-
-                            </dg:DataGrid.Resources>
-
-                            <dg:DataGrid.Columns>
-                                <dg:DataGridTemplateColumn Header="" >
-                                    <dg:DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Name="btnDetails" Click="ShowDetails" ToolTip="Show / Hide details">+</Button>
-                                        </DataTemplate>
-                                    </dg:DataGridTemplateColumn.CellTemplate>
-                                </dg:DataGridTemplateColumn>
-                                <dg:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" IsReadOnly="True" />
-                                <dg:DataGridTextColumn Header="Total" Binding="{Binding Value, Mode=OneWay}" IsReadOnly="True" />
-                                <dg:DataGridTextColumn Header="Observations" Binding="{Binding Observations, NotifyOnValidationError=True, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" />
-                                <!--<DataGridComboBoxColumn Header="Order Status"  SelectedItemBinding="{Binding Status}" ItemsSource="{Binding Source={StaticResource myEnum}}" />-->
-                            </dg:DataGrid.Columns>
-                                                   
-                            <dg:DataGrid.RowDetailsTemplate>
-                                <DataTemplate>
-                                    <dg:DataGrid ItemsSource="{Binding Details}" AutoGenerateColumns="False">
-                                        <dg:DataGrid.Columns>
-                                            <dg:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" IsReadOnly="True" />
-                                            <dg:DataGridTextColumn Header="Measuring Unit" Binding="{Binding MeasuringUnit, Mode=OneWay}" IsReadOnly="True" />
-                                            <dg:DataGridTextColumn Header="Quantity" Binding="{Binding Quantity, NotifyOnTargetUpdated=True, NotifyOnValidationError=True, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" />
-                                            <dg:DataGridTextColumn Header="UnitPrice" Binding="{Binding UnitPrice, Mode=OneWay}" IsReadOnly="True" />
-                                            <dg:DataGridTextColumn Header="Total" Binding="{Binding Value, Mode=OneWay}" IsReadOnly="True" />
-                                            <dg:DataGridTextColumn Header="Observations" Binding="{Binding Observations, NotifyOnValidationError=True, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}">
-                                                <!--<DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="ToolTip" Value="default"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="Validation.HasError" Value="true">
-                                            <Setter Property="ToolTip" Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>-->
-                                            </dg:DataGridTextColumn>
-                                        </dg:DataGrid.Columns>
-                                    </dg:DataGrid>
-                                </DataTemplate>
-                            </dg:DataGrid.RowDetailsTemplate>
-                        </dg:DataGrid>
 
                         <dg:DataGrid Name="theGrid" AutoGenerateColumns="True" DockPanel.Dock="Left" MinRowHeight="20" 
                                      ItemsSource="{Binding .,  ValidatesOnDataErrors=True}" SelectionChanged="theGrid_SelectionChanged"
@@ -240,7 +133,8 @@
                                 <BindingGroup NotifyOnValidationError="True"/>
                             </DataGrid.ItemBindingGroup>
                         </dg:DataGrid>
-                    </DockPanel>
+                    </DockPanel>-->
+                    <ContentControl x:Name="MainContent"/>
                 </DockPanel>
             </TabItem>
 

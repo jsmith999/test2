@@ -16,6 +16,13 @@
                   </xs:simpleType>
                 </xs:element>
                 <xs:element name="IsDeleted" type="xs:boolean" />
+                <xs:element name="Observations" minOccurs="0">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:maxLength value="50" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -27,6 +34,7 @@
     <Key>1</Key>
     <Name>Materials</Name>
     <IsDeleted>false</IsDeleted>
+    <Observations>mat obs</Observations>
   </ProjectItemCategory>
   <ProjectItemCategory>
     <Key>2</Key>
@@ -37,6 +45,7 @@
     <Key>3</Key>
     <Name>Tools</Name>
     <IsDeleted>false</IsDeleted>
+    <Observations></Observations>
   </ProjectItemCategory>
 </NewDataSet>
               

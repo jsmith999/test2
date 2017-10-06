@@ -18,7 +18,7 @@ namespace Conta.DAL.Model {
         //public override int Parent { get { return this.Key; } }
         //public override int Order { get { return 0; } }
 
-        public virtual string Observations { get; set; }
+        public /*virtual*/ string Observations { get; set; }
     }
 
     public class ProjectItemDetail  {

@@ -69,7 +69,7 @@ namespace Conta.Model {
         #region service implementation
         class TheService : BaseUiService<Client, UiClient> {
 
-            internal TheService() : base(XmlDal.DataContext.Clients, new KeyValuePair<string, Type>[] { /*add forward refs here*/ }) { }
+            internal TheService() : base(XmlDal.DataContext.Clients, new KeyValuePair<string, Type>[] { new KeyValuePair<string, Type>("Projects", typeof(UiProject)) }) { }
 
             protected override Client GetOriginal(UiClient item) { return item.original; }
 

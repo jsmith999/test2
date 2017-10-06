@@ -32,6 +32,7 @@ namespace XmlDal.ServiceHandler {
             item.Key = (int)row[0];
             item.Name = row[1] as string;
             item.IsDeleted = (bool)row[2];
+            item.Observations = row[3] as string;   // TODO : do not save to category
         }
 
         protected override void ModelToData(ProjectItemCategory item, System.Data.DataRow row) {
@@ -39,6 +40,7 @@ namespace XmlDal.ServiceHandler {
             Debug.Assert((int)row[0] == item.Key);
             row[1] = item.Name;
             row[2] = item.IsDeleted;
+            row[3] = item.Observations;
         }
 
         protected override System.Data.DataRow FindRow(System.Data.DataTable table, ProjectItemCategory item) {
