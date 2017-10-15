@@ -27,6 +27,8 @@ namespace Conta.Model {
             this.original = original;
         }
 
+        public int Id { get { return original.Id; } }
+
         [StringLength(20)]
         [Required()]
         public string Description {
@@ -39,7 +41,7 @@ namespace Conta.Model {
         #region service implementation
         class TheService : BaseUiService<ProjectStatus, UiProjectStatus> {
 
-            internal TheService() : base(XmlDal.DataContext.ProjectStatuss, new KeyValuePair<string, Type>[] { /*add forward refs here*/ }) { }
+            internal TheService() : base(XmlDal.DataContext.ProjectStatus, new KeyValuePair<string, Type>[] { /*add forward refs here*/ }) { }
 
             protected override ProjectStatus GetOriginal(UiProjectStatus item) { return item.original; }
 

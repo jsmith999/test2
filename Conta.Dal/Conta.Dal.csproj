@@ -91,6 +91,7 @@
     <Compile Include="Model\Client.cs" />
     <Compile Include="Model\Employee.cs" />
     <Compile Include="Model\EmployeePosition.cs" />
+    <Compile Include="Model\IDalData.cs" />
     <Compile Include="Model\IUniformProjectGrid.cs" />
     <Compile Include="Model\Note.cs" />
     <Compile Include="Model\Payment.cs" />

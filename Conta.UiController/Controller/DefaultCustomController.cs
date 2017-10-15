@@ -32,7 +32,7 @@ namespace Conta.UiController.Controller {
             this.view = view;
             view.AddBOItem += view_AddBOItem;
             view.DelBOItem += view_DelBOItem;
-            view.ForwardListSelected += view_ForwardListSelected;
+            //view.ForwardListSelected += view_ForwardListSelected;
             view.MainGridSelectionChanged += view_MainGridSelectionChanged;
             view.StartSearch += view_StartSearch;
 
@@ -44,7 +44,7 @@ namespace Conta.UiController.Controller {
 
         void view_DelBOItem(object sender, EventArgs e) { this.DeleteSelection(); }
 
-        void view_ForwardListSelected(object sender, EventArgs e) { SetDataType(sender as Type, service.SelectedItem as UiBase); }
+        //void view_ForwardListSelected(object sender, EventArgs e) { SetDataType(sender as Type, service.SelectedItem as UiBase); }
 
         void view_MainGridSelectionChanged(object sender, UiBase e) { this.SelectionChanged(e); }
 
@@ -227,8 +227,10 @@ namespace Conta.UiController.Controller {
             if (service == null) {
                 this.service = AppServices.Instance.GetDataService(parameter.BusinessObject.UiDataType);
                 CurrentType = parameter.BusinessObject.UiDataType;
-                this.associatedParent = parameter.Filter;
-                view.GridDataSource = this.service.GetList(this.associatedParent);
+                //this.associatedParent = parameter.Filter;
+                view.GridDataSource = this.service.GetList();
+                if (parameter.Filter != null)
+                    SetChildFilter(parameter.Filter);
             } else {
                 CloseCurrentService();
                 dataViewSourceHandler.Dispose();

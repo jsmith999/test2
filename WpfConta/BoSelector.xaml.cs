@@ -76,7 +76,7 @@ namespace WpfConta {
 
         public event EventHandler<Conta.Dal.UiBase> MainGridSelectionChanged;
 
-        public event EventHandler ForwardListSelected;
+        //public event EventHandler ForwardListSelected;
 
         public MessageActions ShowMessage(string title, string message, MessageActions action) {
             throw new NotImplementedException();

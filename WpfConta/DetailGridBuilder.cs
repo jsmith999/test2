@@ -1,8 +1,14 @@
 ﻿#define CacheMeasurings_
+using Conta.Dal;
+using Conta.Dal.Model;
+using Conta.Model;
+using Conta.UiController;
+using Conta.UiController.Controller;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
@@ -61,7 +67,7 @@ namespace WpfConta {
         }
 
         private void ClearHostChildren(Grid host) {
-            foreach(Control child in host.Children){
+            foreach (Control child in host.Children) {
                 if (child is TextBox)
                     BindingOperations.ClearBinding(child, TextBox.TextProperty);
                 else if (child is DatePicker)
@@ -75,12 +81,39 @@ namespace WpfConta {
             Debug.WriteLine("DetailGridBuilder.Build(" + dataType.Name + ")");
 
             // build
-            foreach (var prop in dataType.GetProperties( BindingFlags.GetProperty|BindingFlags.Instance|BindingFlags.Public)) {
+            foreach (var prop in dataType.GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public)) {
+                var forwardKeyInfo = new ForwardKeyInfo { PropName = prop.Name };
                 var colName = prop.Name;
                 var attrs = prop.GetCustomAttributes(typeof(BrowsableAttribute), true);
                 if (attrs.Length > 0)
-                    if (!(attrs[0] as BrowsableAttribute).Browsable)
-                        continue;       // not browsable
+                    if (!(attrs[0] as BrowsableAttribute).Browsable) {
+                        // not browsable
+                        if (typeof(IUiBase).IsAssignableFrom(dataType)) {
+                            var originalType = dataType.GetField("original", BindingFlags.GetField | BindingFlags.Instance | BindingFlags.NonPublic);
+                            if (originalType != null) {
+                                var originalProperty = originalType.FieldType.GetProperty(prop.Name);
+                                if (originalProperty != null) {
+                                    attrs = originalProperty.GetCustomAttributes(typeof(ForeignKeyAttribute), true);
+                                    if (attrs.Length > 0) {
+                                        forwardKeyInfo.TargetType = typeof(IDalData).Assembly.GetType("Conta.DAL.Model." + (attrs[0] as ForeignKeyAttribute).Name);
+                                        if (forwardKeyInfo.TargetType != null) {
+                                            // infer ui target type
+                                            foreach (var type in typeof(AppServices).Assembly.GetTypes()) {
+                                                var originalField = type.GetField("original", BindingFlags.GetField | BindingFlags.Instance | BindingFlags.NonPublic);
+                                                if (originalField != null &&
+                                                    forwardKeyInfo.TargetType == originalField.FieldType) {
+                                                    forwardKeyInfo.UiType = type;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (forwardKeyInfo.TargetType == null)
+                            continue;   // Browse(false) & not a foreign key
+                    }
 
                 attrs = prop.GetCustomAttributes(typeof(DisplayNameAttribute), true);
                 if (attrs.Length > 0)
@@ -95,10 +128,43 @@ namespace WpfConta {
 
                 Control editor = null;
                 if (prop.PropertyType == typeof(DateTime)) {
-                    var dt = new DatePicker();
+                    var dt = new DatePicker {
+                        Name = "datePicker_" + prop.Name,
+                        IsTabStop = true,
+                        //Background = Brushes.Azure,
+                    };
+
                     dt.SetBinding(DatePicker.SelectedDateProperty, ApplyBinding(prop.Name, isReadOnly));
                     editor = dt;
+                } else if (forwardKeyInfo.TargetType != null) {
+                    // "known" class : ckeck for foreign key
+                    var ctrl = new Button();
+                    ctrl.Content = prop.Name;
+                    ctrl.Click += ctrlForeignKey_Click;
+                    ctrl.Tag = forwardKeyInfo;
+                    //ctrl.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                    //display.EditorWidth = ctrl.ActualWidth;
+
+                    //ctrl.SetBinding(Button.TagProperty, ApplyBinding(string.Empty, isReadOnly));
+                    editor = ctrl;
+                } else if ((attrs = prop.GetCustomAttributes(typeof(LookupBoundPropertyAttribute), true)).Length > 0) {
+                    var lookupAttribute = attrs[0] as LookupBoundPropertyAttribute;
+                    var combo = new ComboBox {
+                        Name = "comboBox_" + prop.Name,
+                        DisplayMemberPath = lookupAttribute.DisplayMember,
+                        //IsAutoGenerated = true,
+                        SelectedValuePath = lookupAttribute.LookupMember,
+                        //SelectedValueBinding = GetBinding(prop.Name),
+                        //Background = Brushes.Azure,
+                    };
+
+                    combo.SetBinding(ComboBox.SelectedValueProperty, ApplyBinding(prop.Name, isReadOnly));
+                    if (UiProjectStatus.Service == null) UiProjectStatus.InitService();
+                    combo.ItemsSource = UiProjectStatus.Service.GetList();
+
+                    editor = combo;
                 } else {
+                    // catch-all
                     var textLen = 10;
                     //if (prop.PropertyType == typeof(int)) textLen = 10;
                     if (prop.PropertyType == typeof(string)) {
@@ -107,8 +173,11 @@ namespace WpfConta {
                             textLen = (attrs[0] as StringLengthAttribute).MaximumLength;
                     }
 
-                    var ctrl = new TextBox();
-                    ctrl.Text = new string('n', textLen);
+                    var ctrl = new TextBox {
+                        //Background = Brushes.Azure,
+                        Name = "textBox_" + prop.Name,
+                        Text = new string('n', textLen),
+                    };
                     //ctrl.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
                     //display.EditorWidth = ctrl.ActualWidth;
 
@@ -116,7 +185,8 @@ namespace WpfConta {
                     editor = ctrl;
                 }
 
-                editor.Name = "detail_" + dataType.Name + "_" + prop.Name;
+                if (string.IsNullOrEmpty(editor.Name))
+                    editor.Name = "detail_" + dataType.Name + "_" + prop.Name;
                 var display = new Record(/*dataType.Name + */colName, editor);
                 DataSource.Add(display);
                 display.AddToGrid(theGrid);
@@ -124,6 +194,46 @@ namespace WpfConta {
 
             InitGrid(theGrid);
             Rearrange();
+        }
+
+        void ctrlForeignKey_Click(object sender, RoutedEventArgs e) {
+            if (dataSourceGrid.SelectedItem == null) return;
+
+            var button = sender as Button;
+            Debug.Assert(button != null && button.Tag is ForwardKeyInfo);
+            var forwardKeyInfo = button.Tag as ForwardKeyInfo;
+
+            var dlg = new BoSelector();
+            var childController = new EditableListSelectorController(dlg, forwardKeyInfo.UiType);
+
+            //childController.Setter = x => (button.DataContext as DefaultCustomController).SelectedItem.GetType().GetProperty(propName).SetValue(button.DataContext, x);
+            childController.Setter = x => SetForwardProperty(forwardKeyInfo, x);
+
+            dlg.DataContext = childController;
+            dlg.ShowDialog();
+        }
+
+        private void SetForwardProperty(ForwardKeyInfo forwardKeyInfo, object newValue) {
+            var destProperty = dataSourceGrid.SelectedItem.GetType().GetProperty(forwardKeyInfo.PropName);
+            if (destProperty == null) return;
+            foreach (var keyProperty in forwardKeyInfo.TargetType.GetProperties()) {
+                var attrs = keyProperty.GetCustomAttributes(typeof(KeyAttribute));
+                foreach (var attr in attrs) {
+                    var uiProperty = forwardKeyInfo.UiType.GetProperty(keyProperty.Name);
+                    var keyValue = uiProperty.GetValue(newValue);
+                    destProperty.SetValue(dataSourceGrid.SelectedItem, keyValue);
+#warning will only work on single-column key
+                    return;
+                }
+            }
+
+            Debug.Assert(false, "No primary key found");
+        }
+
+        private bool IsKnownType(Type type) {
+            //var result = BusinessObject.Declared.Exists(x => x.UiDataType == type);
+            var result = typeof(IDalData).IsAssignableFrom(type);
+            return result;
         }
 
         private int lastColCount = -1;
@@ -241,12 +351,15 @@ namespace WpfConta {
                 var colNo = colIndex % colCount;
                 var rowNo = colIndex / colCount;
                 //theGrid.Children.Remove(DataSource[colIndex].DescriptionLabel);
-                var initialColumn = (int)DataSource[colIndex].DescriptionLabel.GetValue(Grid.ColumnProperty);
-                var initialRow = (int)DataSource[colIndex].DescriptionLabel.GetValue(Grid.RowProperty);
-                DataSource[colIndex].DescriptionLabel.SetValue(Grid.ColumnProperty, 3 * colNo);
-                DataSource[colIndex].DescriptionLabel.SetValue(Grid.RowProperty, rowNo);
-                //theGrid.Children.Add(DataSource[colIndex].DescriptionLabel);
-
+                var initialColumn = 0;
+                var initialRow = 0;
+                if (DataSource[colIndex].DescriptionLabel != null) {
+                    initialColumn = (int)DataSource[colIndex].DescriptionLabel.GetValue(Grid.ColumnProperty);
+                    initialRow = (int)DataSource[colIndex].DescriptionLabel.GetValue(Grid.RowProperty);
+                    DataSource[colIndex].DescriptionLabel.SetValue(Grid.ColumnProperty, 3 * colNo);
+                    DataSource[colIndex].DescriptionLabel.SetValue(Grid.RowProperty, rowNo);
+                    //theGrid.Children.Add(DataSource[colIndex].DescriptionLabel);
+                }
                 //theGrid.Children.Remove(DataSource[colIndex].DataCtrl);
                 DataSource[colIndex].DataCtrl.SetValue(Grid.ColumnProperty, 3 * colNo + 1);
                 DataSource[colIndex].DataCtrl.SetValue(Grid.RowProperty, rowNo);
@@ -276,7 +389,7 @@ namespace WpfConta {
         private void InitGrid(Grid grid) {
             foreach (var rec in DataSource) {
                 grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-                rec.DescriptionLabel.Visibility = Visibility.Visible;
+                if (rec.DescriptionLabel != null) rec.DescriptionLabel.Visibility = Visibility.Visible;
                 rec.DataCtrl.Visibility = Visibility.Visible;
             }
         }
@@ -290,7 +403,7 @@ namespace WpfConta {
             binder.Mode = isReadOnly ? BindingMode.OneWay : BindingMode.TwoWay;
             // bind to the property of the selected item in the data grid
             binder.ElementName = dataSourceGrid.Name;
-            binder.Path = new PropertyPath("SelectedItem." + propName);
+            binder.Path = new PropertyPath("SelectedItem" + (string.IsNullOrWhiteSpace(propName) ? string.Empty : ("." + propName)));
             binder.ValidatesOnDataErrors = true;
             return binder;
         }
@@ -316,7 +429,7 @@ namespace WpfConta {
             public double DescWidth { get; set; }
             public double EditorWidth { get; set; }
 #else
-            public double DescWidth { get { return GetWidth(this.Description, this.DescriptionLabel) + this.DescriptionLabel.Margin.Right + this.DescriptionLabel.Margin.Left; } }
+            public double DescWidth { get { return GetWidth(this.Description, this.DescriptionLabel) + 2d * MarginSize; } }
             public double EditorWidth { get { return GetEditWidth(); } }
 #endif
 
@@ -326,16 +439,23 @@ namespace WpfConta {
             }
 
             public void AddToGrid(Grid grid) {
-                this.DescriptionLabel = new Label { Content = this.Description, Margin = new Thickness(MarginSize), };
-                //this.DescriptionWidth = this.DescriptionLabel.ActualWidth;    // 0.0
+                if (!(this.DataCtrl is Button)) {
+                    this.DescriptionLabel = new Label {
+                        Content = this.Description,
+                        Margin = new Thickness(MarginSize, 0d, MarginSize, 0d),
+                        //Background = Brushes.Azure,
+                    };
+                    //this.DescriptionWidth = this.DescriptionLabel.ActualWidth;    // 0.0
 #if(CacheMeasurings)
                 this.DescWidth = GetWidth(this.Description, this.DescriptionLabel) + 10d;
 #else
 #endif
-                this.DescriptionLabel.Name = "lbl" + this.DataCtrl.Name;
-                this.DescriptionLabel.Visibility = Visibility.Collapsed;
+                    this.DescriptionLabel.Name = "lbl" + this.DataCtrl.Name;
+                    this.DescriptionLabel.Visibility = Visibility.Collapsed;
 
-                grid.Children.Add(this.DescriptionLabel);
+                    grid.Children.Add(this.DescriptionLabel);
+                }
+
                 grid.Children.Add(this.DataCtrl);
 
                 if (this.DataCtrl is TextBox) {
@@ -357,13 +477,21 @@ namespace WpfConta {
             }
 
             private double GetWidth(string text, Control ctrl) {
-                return new FormattedText(text,
+                return ctrl == null ?
+                    0d :
+                    new FormattedText(text,
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
                     new Typeface(ctrl.FontFamily, ctrl.FontStyle, ctrl.FontWeight, ctrl.FontStretch),
                     ctrl.FontSize,
                     Brushes.Black).Width;
             }
+        }
+
+        class ForwardKeyInfo {
+            public string PropName { get; set; }
+            public Type UiType { get; set; }
+            public Type TargetType { get; set; }
         }
     }
 }

@@ -50,6 +50,16 @@ namespace Conta.UiController {
                 return UiProjectCategory.Service;
             }
 
+            if (type == typeof(UiAddress)) {
+                UiAddress.InitService();
+                return UiAddress.Service;
+            }
+
+            if (type == typeof(UiProjectStatus)) {
+                UiProjectStatus.InitService();
+                return UiProjectStatus.Service;
+            }
+
             // TODO : throw an exception
             return null;
         }

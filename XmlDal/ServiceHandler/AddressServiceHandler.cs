@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Conta.DAL.Model;
 
 namespace XmlDal.ServiceHandler {
-    class AddressServiceHandler : TableService<Address, int> {
+    public class AddressServiceHandler : TableService<Address, int> {
         public AddressServiceHandler() {
             TableName = "Address";
             KeyName = "Id";

@@ -66,6 +66,9 @@
             </ListView.ItemTemplate>
         </ListView>
 
+        <Border Name="DetailBorder" DockPanel.Dock="Bottom">
+            <Grid Name="DetailsGrid" AutomationProperties.Name="DetailsGrid" Margin="2" />
+        </Border>
         <dg:DataGrid Name="theGrid" AutoGenerateColumns="True" DockPanel.Dock="Left" MinRowHeight="20" 
                                      ItemsSource="{Binding .,  ValidatesOnDataErrors=True}" SelectionChanged="theGrid_SelectionChanged"
                                      AutoGeneratingColumn="theGrid_AutoGeneratingColumn"

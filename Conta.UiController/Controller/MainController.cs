@@ -93,7 +93,7 @@ namespace Conta.UiController.Controller {
         private bool hasParent;
         private IUiBase parent;
 
-        private IUiBase associatedParent;
+        //private IUiBase associatedParent;
         private string searchValue;
 
         public static ObservableCollection<UiProjectItemsCategory> ProjectData;
@@ -241,9 +241,8 @@ namespace Conta.UiController.Controller {
 
         #region helpers
         protected IUiBase GetListParent() {
-            return this.parent != null ?
-                this.parent :
-                this.IsGlobalSearch ? null : this.associatedParent;
+            return this.parent ??
+                (this.IsGlobalSearch ? null : this.parent); // TODO : was associatedPareent
         }
 
         protected virtual void SetDataSource(ICollection dataSource) {

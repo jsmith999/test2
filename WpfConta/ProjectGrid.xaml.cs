@@ -71,7 +71,7 @@ namespace WpfConta {
 
         public event EventHandler<Conta.Dal.UiBase> MainGridSelectionChanged;
 
-        public event EventHandler ForwardListSelected;
+        //public event EventHandler ForwardListSelected;
 
         public MessageActions ShowMessage(string title, string message, MessageActions action) {
             return mainGrid.ShowMessage(title, message, action);
@@ -81,6 +81,7 @@ namespace WpfConta {
         #region event sinks
         void SearchableGrid_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
             controller = e.NewValue as MasterDetailController;
+            this.mainGrid.DataContext = controller.MainController;
         }
 
         void mainGrid_MainGridSelectionChanged(object sender, Conta.Dal.UiBase e) {

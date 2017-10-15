@@ -27,11 +27,15 @@ namespace Conta.Model {
             this.original = original;
         }
 
-        [Required()]
+        //![Required()]
+        [Browsable(false)]
         public int ClientId {
             get { return original.ClientId; }
             set { SetProp(original.ClientId, value, v => original.ClientId = v, "ClientId"); }
         }
+
+        // TODO : use this ?
+        //public Client Client { get; set; }
 
         [StringLength(20)]
         [Required()]

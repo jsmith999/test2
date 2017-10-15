@@ -40,7 +40,7 @@ namespace Conta.UiController.Controller {
         event EventHandler DelBOItem;
         event EventHandler StartSearch;
         event EventHandler<UiBase> MainGridSelectionChanged;
-        event EventHandler ForwardListSelected;
+        //event EventHandler ForwardListSelected;
 
         //void SetSelection(IUiBase item);
         //void SetRowStatus(int oldSelectionIndex, RowStatus lockStatus);

@@ -24,7 +24,6 @@ namespace WpfConta {
     /// </summary>
     public partial class MainWdw : Window, IMainView {
         private readonly IDataController controller;
-        private DetailGridBuilder detailCtrl;   // TODO
         private IBaseCustomView customControl;
         private IDisposable dataViewSourceSink;
         //private IBaseCustomController customController;
@@ -47,13 +46,7 @@ namespace WpfConta {
         #region IMainView Members
         public object GridDataSource {
             set {
-                if (this.detailCtrl != null) this.detailCtrl.Dispose();
                 /*
-                foreach (var item in (value as IList)) {
-                    this.detailCtrl = DetailGridBuilder.Build(this.DetailsGrid, this.DetailBorder, item.GetType(), this.MainContent.MainGrid);
-                    break;
-                }
-
                 MainContent.MainGrid.DataContext = value;   // TODO : replace by another property
                 /* */
             }
@@ -209,8 +202,6 @@ namespace WpfConta {
             }
             Debug.WriteLine("done..." + Thread.CurrentThread.ManagedThreadId);
             /* */
-
-            this.detailCtrl.Rearrange();
         }
 
         private void projectGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -302,10 +293,16 @@ namespace WpfConta {
                 new SearchableGrid() as object;
             customControl = crtControl as IBaseCustomView;
 
-            var customController = bo.UiDataType == typeof(UiProject) ?
-                new MasterDetailController(crtControl as IDetailCustomView) as IBaseCustomController :
-                new DefaultCustomController(crtControl as IBaseCustomView) as IBaseCustomController;
+            IBaseCustomController customController = null;
+            if (bo.UiDataType == typeof(UiProject)) {
+                var mdController = new MasterDetailController(crtControl as IDetailCustomView);
+                mdController.MainController = new DefaultCustomController((customControl as ProjectGrid).mainGrid);
+                customController = mdController as IBaseCustomController;
+            } else {
+                customController = new DefaultCustomController(crtControl as IBaseCustomView) as IBaseCustomController;
+            }
             customControl.DataContext = customController;
+            //customController.SetChildFilter(bo.Selection as IUiBase);     // too early!
 
             //RaiseJumpTo(bo.UiDataType, theGrid.SelectedItem as UiBase);
             this.MainContent.Content = crtControl as UserControl;

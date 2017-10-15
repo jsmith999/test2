@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:WpfConta"
         xmlns:conv="clr-namespace:WpfConta.Converters"
-        Title="BoSelector" Height="300" Width="300">
+        Title="BoSelector" Height="500" Width="500">
     <Window.Resources>
         <conv:IsNullConverter x:Key="IsNullConverter"/>
     </Window.Resources>

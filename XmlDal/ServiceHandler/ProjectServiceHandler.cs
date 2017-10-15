@@ -41,8 +41,8 @@ namespace XmlDal.ServiceHandler {
             item.Receivable = (string)row[7];
             item.AgeOfReceivable = (string)row[8];
             item.ClientKey = (int)row[9];
-            if (item.ClientKey != 0)
-                item.Client = clientServiceHandler.FromKey(item.ClientKey);
+            //if (item.ClientKey != 0)
+            //    item.Client = clientServiceHandler.FromKey(item.ClientKey);
         }
 
         protected override Project DataToModel(DataRow row) {

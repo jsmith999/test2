@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 
 namespace XmlDal.ServiceHandler {
+    /* not used
     class ProjectItemComparer : IComparer<IUniformProjectGrid> {
         public int Compare(IUniformProjectGrid left, IUniformProjectGrid right) {
             if (left.Parent != right.Parent)
@@ -10,4 +11,5 @@ namespace XmlDal.ServiceHandler {
             return Math.Sign(left.Order - right.Order);
         }
     }
+    /* */
 }

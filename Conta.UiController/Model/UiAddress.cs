@@ -85,7 +85,7 @@ namespace Conta.Model {
         }
 
         [StringLength(100)]
-        [Required()]
+        //[Required()]
         public string Description {
             get { return original.Description; }
             set { SetProp(original.Description, value, v => original.Description = v, "Description"); }

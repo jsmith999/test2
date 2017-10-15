@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Conta.Dal.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 
 namespace Conta.DAL.Model {
-    public class ProjectItemCategory  {
+    public class ProjectItemCategory : IDalData {
         public ProjectItemCategory() { }
         [Key]
         public int Key { get; set; }

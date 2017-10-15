@@ -25,6 +25,8 @@ namespace Conta.UiController.Controller {
             set { SetValue(ref popupController, value, "PopupController"); }
         }
 
+        public IBaseCustomController MainController { get; set; }
+
         // TODO: test 
         public override void SelectionChanged(Dal.IUiBase item) {
             if (item is UiProject) {

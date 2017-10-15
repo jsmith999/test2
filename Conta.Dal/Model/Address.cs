@@ -1,9 +1,10 @@
+using Conta.Dal.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Conta.DAL.Model {
-        public partial class Address {
+    public partial class Address : IDalData {
         public Address() { }
         [Key]
         public int Id { get; set; }

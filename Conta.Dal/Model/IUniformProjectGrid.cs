@@ -8,6 +8,7 @@ using Conta.DAL;
 using Conta.DAL.Model;
 
 namespace Conta.DAL.Model {
+    /* not used
     public enum ProjectRowType {
         Category,
         Material,
@@ -35,4 +36,5 @@ namespace Conta.DAL.Model {
         [Browsable(false)]
         int Order { get; set; }
     }
+    /* */
 }

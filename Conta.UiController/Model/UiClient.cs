@@ -2,6 +2,7 @@
 using Conta.DAL;
 using Conta.DAL.Model;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -45,16 +46,24 @@ namespace Conta.Model {
             set { SetProp(original.Surname, value, v => original.Surname = v, "Surname"); }
         }
 
-        [Required()]
+        //![Required()]
         [Browsable(false)]
-        public int AddressKey {
-            get { return original.AddressId; }
-            set { SetProp(original.AddressId, value, v => original.AddressId = v, "AddressKey"); }
+        public int AddressId {
+            get {
+                return original.AddressId;
+            }
+
+            set {
+                if (SetProp(original.AddressId, value, v => original.AddressId = v, "AddressId"))
+                    Address = value == 0 ?
+                        null :
+                        XmlDal.DataContext.Addresss.FromKey(value);
+            }
         }
 
         public Address Address {
             get { return original.Address; }
-            set { SetProp(original.Address, value, v => original.Address = v, "Address"); }
+            set { SetProp(original.Address, value, v => { original.Address = v; original.AddressId = v.Id; }, "Address"); }
         }
 
         [StringLength(100)]
