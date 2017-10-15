@@ -1,0 +1,107 @@
+<?xml version='1.0' standalone='yes'?>
+<NewDataSet>
+  <xs:schema id='NewDataSet' xmlns='' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:msdata='urn:schemas-microsoft-com:xml-msdata'>
+    <xs:element name='NewDataSet' msdata:IsDataSet='true' msdata:MainDataTable='Client' msdata:UseCurrentLocale='true'>
+      <xs:complexType>
+        <xs:choice minOccurs='0' maxOccurs='unbounded'>
+          <xs:element name='Address'>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name='id' type='xs:int'/>
+                <xs:element name='street_no'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='20' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name='street1'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='100' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name='street2'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='100' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name='city'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='100' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name='province'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='5' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name='country'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='20' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name='postalcode'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='10' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name='description'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='100' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Address>
+    <id>1</id>
+    <street_no>123</street_no>
+    <street1>Red St</street1>
+    <street2/>
+    <city>Montreal</city>
+    <province>Qc</province>
+    <country>Ca</country>
+    <postalcode>A1B2C3</postalcode>
+    <description/>
+  </Address>
+  <Address>
+    <id>2</id>
+    <street_no>234</street_no>
+    <street1>Yellow Bd</street1>
+    <street2/>
+    <city>Montreal</city>
+    <province>Qc</province>
+    <country>Ca</country>
+    <postalcode>B2C3D4</postalcode>
+    <description/>
+  </Address>
+  <Address>
+    <id>3</id>
+    <street_no>345</street_no>
+    <street1>Blue Av</street1>
+    <street2/>
+    <city>Montreal</city>
+    <province>Qc</province>
+    <country>Ca</country>
+    <postalcode>C3D4E5</postalcode>
+    <description/>
+  </Address>
+</NewDataSet>

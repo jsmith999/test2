@@ -1,0 +1,37 @@
+<?xml version='1.0' standalone='yes'?>
+<NewDataSet>
+  <xs:schema id='NewDataSet' xmlns='' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:msdata='urn:schemas-microsoft-com:xml-msdata'>
+    <xs:element name='NewDataSet' msdata:IsDataSet='true' msdata:MainDataTable='Client' msdata:UseCurrentLocale='true'>
+      <xs:complexType>
+        <xs:choice minOccurs='0' maxOccurs='unbounded'>
+          <xs:element name='ProjectStatus'>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name='Id' type='xs:int'/>
+                <xs:element name='Description'>
+                  <xs:simpleType>
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='20' />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <ProjectStatus>
+    <Id>0</Id>
+    <Description>Unknown</Description>
+  </ProjectStatus>
+  <ProjectStatus>
+    <Id>1</Id>
+    <Description>One</Description>
+  </ProjectStatus>
+  <ProjectStatus>
+    <Id>2</Id>
+    <Description>Another</Description>
+  </ProjectStatus>
+</NewDataSet>

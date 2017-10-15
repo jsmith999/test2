@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Conta.UiController.AppServices" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAABAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>AppServices.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.UiController.BusinessObject" Collapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAYAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>BusinessObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.UiController.ObservableService&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAACIABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ObservableService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Conta.UiController.Controller.BudgetReport" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAGAAQAAAAAAAAAA=</HashCode>
+      <FileName>Controller\BudgetReport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.UiController.Controller.DataViewParameter" Collapsed="true">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controller\DataViewParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.UiController.Controller.DefaultCustomController" Collapsed="true">
+    <Position X="3.5" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>iAAACABGgkAAAgBAkBAOAGAE2gEAJiAAQUCiUAAgAAA=</HashCode>
+      <FileName>Controller\DefaultCustomController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Conta.UiController.Controller.LookupBoundPropertyAttribute" Collapsed="true">
+    <Position X="10.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAQBAAAAA=</HashCode>
+      <FileName>Controller\LookupBoundPropertyAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.UiController.Controller.TypeEventArgs" Collapsed="true">
+    <Position X="15.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Controller\MainController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.UiController.Controller.MainController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iAAACAACAggAAgBAkAAOAEAE2gEAIiBAA0AiUAAgAAA=</HashCode>
+      <FileName>Controller\MainController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Conta.UiController.Controller.MasterDetailController" Collapsed="true">
+    <Position X="3.5" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAAAAA=</HashCode>
+      <FileName>Controller\MasterDetailController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.BaseUiService&lt;TDal, TUiItem&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQQAAAEAAAAAAAQAAAAAAAAAAEEAFAIAFAAAQAAAAI=</HashCode>
+      <FileName>Model\BaseUiService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Conta.Model.UiAddress" Collapsed="true">
+    <Position X="17.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBAAAAAAhAAAIIAAAAAAAAA4AQAAAAEAAAgAAAFA=</HashCode>
+      <FileName>Model\UiAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiAttach" Collapsed="true">
+    <Position X="10.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAhAAAAAAAAAAAAAAAAQAAAAEAAAABAAEA=</HashCode>
+      <FileName>Model\UiAttach.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiClient" Collapsed="true">
+    <Position X="12" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBAAAACABAAAAAAAAAAQABAIAQAACAEAAAAAAAEA=</HashCode>
+      <FileName>Model\UiClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiEmployee" Collapsed="true">
+    <Position X="13.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBCAACAABAAAAAAAAAAQABCAAQAAAAEAAAAAAAEA=</HashCode>
+      <FileName>Model\UiEmployee.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiMaterial" Collapsed="true">
+    <Position X="15.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAABAAAAAARAAQAAAAAAAQAAAAAQAAAAEAAAAAACEA=</HashCode>
+      <FileName>Model\UiMaterial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiNote" Collapsed="true">
+    <Position X="17.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBAAAAAAhAAAAAAAAAAAAAAAAQAAAAEAAAABAAEA=</HashCode>
+      <FileName>Model\UiNote.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiPayment" Collapsed="true">
+    <Position X="10.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBAAAAAAhAAAAAAAACAAAAAAAQAABAEAAAAAAAEQ=</HashCode>
+      <FileName>Model\UiPayment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiPhones" Collapsed="true">
+    <Position X="12" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAABAAAAgAAABAAAAAAQQQAAAEAAAAAAAEA=</HashCode>
+      <FileName>Model\UiPhones.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiProject" Collapsed="true">
+    <Position X="13.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACACBAAEAQABAAAAAABAAAQgAAAAQAACAEAAAEAAAEA=</HashCode>
+      <FileName>Model\UiProject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiProjectCategory" Collapsed="true">
+    <Position X="15.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAABAAAAAABAAQAAAAQAAQAAAAAQAAAAEAAAQAAAEA=</HashCode>
+      <FileName>Model\UiProjectCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiProjectItemsCategory" Collapsed="true">
+    <Position X="10.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAADAAgAAABIAQAAQAQAAQAAAAAQAEAAEAgASAAAEA=</HashCode>
+      <FileName>Model\UiProjectItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiProjectItemDetail" Collapsed="true">
+    <Position X="17.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAABAAAAAAQAAQAAAAQAAQAAAAAQAAAAAAggAAAAEA=</HashCode>
+      <FileName>Model\UiProjectItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Model.UiProjectStatus">
+    <Position X="12" Y="4.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Conta.Model.UiProjectStatus.TheService" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Model\UiProjectStatus.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAhAAAAAAAAAAAAAAAAQAAAAEAAAAAAAEA=</HashCode>
+      <FileName>Model\UiProjectStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conta.Dal.UiBase">
+    <Position X="8" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Conta.UiController.IObservableService&lt;T&gt;" Collapsed="true">
+    <Position X="15.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ObservableService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Conta.UiController.Controller.IBaseCustomController" Collapsed="true">
+    <Position X="3.5" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAkAAAAAAABACAAAACgAAIgAAAAAgUAAgAAA=</HashCode>
+      <FileName>Controller\IBaseCustomController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Conta.UiController.Controller.IDetailCustomView" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAIAAAA=</HashCode>
+      <FileName>Controller\IBaseCustomController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Conta.UiController.Controller.IBaseCustomView" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hAAAAAgAAAAAAAABAAAAAABAAAEABAAAABJAAAACAAA=</HashCode>
+      <FileName>Controller\IBaseCustomController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Conta.UiController.Controller.IDataController" Collapsed="true">
+    <Position X="12" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAACAAAAAgAAIgAAAAAgUAAgAAA=</HashCode>
+      <FileName>Controller\IController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Conta.UiController.Controller.IMainView" Collapsed="true">
+    <Position X="13.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAIAIASAAAAAAAEAAAgAAAhAAAIAIAA=</HashCode>
+      <FileName>Controller\MainController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Conta.Dal.IUiBase" Collapsed="true">
+    <Position X="6.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="Conta.UiController.Controller.RowStatus" Collapsed="true">
+    <Position X="12" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAIAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Controller\MainController.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Conta.UiController.Controller.MessageActions" Collapsed="true">
+    <Position X="10.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAQAAAAAAAAAAAAACAAAAAAAAABAAEAAAA=</HashCode>
+      <FileName>Controller\MainController.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

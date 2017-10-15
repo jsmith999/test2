@@ -1,0 +1,34 @@
+﻿<Window x:Class="WpfConta.BoSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WpfConta"
+        xmlns:conv="clr-namespace:WpfConta.Converters"
+        Title="BoSelector" Height="300" Width="300">
+    <Window.Resources>
+        <conv:IsNullConverter x:Key="IsNullConverter"/>
+    </Window.Resources>
+    <DockPanel LastChildFill="true">
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button HorizontalAlignment="Center" HorizontalContentAlignment="Center" Name="OkBtn" Content="_Ok" Click="OkBtn_Click">
+                <Button.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=mainGrid, Path=SelectedRows, NotifyOnSourceUpdated=True}" Value="0">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button HorizontalAlignment="Center" HorizontalContentAlignment="Center" Name="ClearBtn"  Content="C_lear" Grid.Column="1" Click="ClearBtn_Click"/>
+            <Button HorizontalAlignment="Center" HorizontalContentAlignment="Center" Name="CancelBtn"  Content="_Cancel" Grid.Column="2" Click="CancelBtn_Click"/>
+        </Grid>
+        <local:SearchableGrid x:Name="mainGrid" DockPanel.Dock="Top"/>
+    </DockPanel>
+</Window>
