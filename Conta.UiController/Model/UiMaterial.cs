@@ -49,7 +49,7 @@ namespace Conta.Model {
             set { SetProp(original.UnitPrice, value, x => original.UnitPrice = x, "UnitPrice"); }
         }
         // TODO ref to ProjectItemCategory
-        [LookupBoundProperty(/*DataSource*/"UiProjectCategory", /*DisplayMember*/"Name", /*ValueMember*/"Category", /*LookupMember*/"Key")]
+        [LookupBoundProperty(/*DataSource*/"UiProjectCategory", /*DisplayMember*/"Name", /*ValueMember*/"Category", /*LookupMember*/"Id")]
         public int Category {
             get { return original.Category; }
             set { SetProp(original.Category, value, x => original.Category = x, "Category"); }

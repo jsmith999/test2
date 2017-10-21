@@ -60,6 +60,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiveCharts">
+      <HintPath>..\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf">
+      <HintPath>..\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -95,6 +101,12 @@
       <DependentUpon>ButtonBreadcrumbs.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\IsNullConverter.cs" />
+    <Compile Include="FlowReports\BindableTable.cs" />
+    <Compile Include="FlowReports\ContentElement.cs" />
+    <Compile Include="FlowReports\FlowReport.xaml.cs">
+      <DependentUpon>FlowReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FlowReports\ProjectDistributionByCategoryChartDataConverter.cs" />
     <Compile Include="ProjectGrid.xaml.cs">
       <DependentUpon>ProjectGrid.xaml</DependentUpon>
     </Compile>
@@ -110,6 +122,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ButtonBreadcrumbs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FlowReports\FlowReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -31,7 +31,6 @@ namespace Conta.Model {
         [Browsable(false)]
         public int Id { get { return original.Id; } }
 
-        [Required()]
         public int Project {
             get { return original.Project; }
             set { SetProp(original.Project, value, v => original.Project = v, "Project"); }

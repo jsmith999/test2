@@ -70,14 +70,12 @@ namespace Conta.Model {
         }
 
         [StringLength(20)]
-        [Required()]
         public string Country {
             get { return original.Country; }
             set { SetProp(original.Country, value, v => original.Country = v, "Country"); }
         }
 
         [StringLength(10)]
-        [Required()]
         [System.ComponentModel.DisplayName("Postal Code / Zip")]
         public string PostalCode {
             get { return original.PostalCode; }
@@ -85,7 +83,6 @@ namespace Conta.Model {
         }
 
         [StringLength(100)]
-        //[Required()]
         public string Description {
             get { return original.Description; }
             set { SetProp(original.Description, value, v => original.Description = v, "Description"); }

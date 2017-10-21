@@ -234,8 +234,9 @@ namespace Conta.UiController.Controller {
         }
 
         public void ExecuteReport(string header) {
-            if (header == "Budgets")
-                view.ShowReport(new BudgetReport().Create());
+            //if (header == "Budgets")
+            //    view.ShowReport(new BudgetReport().Create());
+            view.ShowReport(header);
         }
         #endregion
 
@@ -249,7 +250,7 @@ namespace Conta.UiController.Controller {
             //view.GridDetailSource = dataSource;
             SetViewDataSource(dataSource);
         }
-
+        /* not used
         private void SelectService(IDataClientService newService, Type dataType, UiBase parent, IEnumerable<string> reports = null) {
             // reset filter
             this.searchValue = string.Empty;
@@ -269,7 +270,7 @@ namespace Conta.UiController.Controller {
             if (dataType == typeof(UiEmployee))
                 (dataSource as ObservableCollection<UiEmployee>)[1].IsLocked = true;
         }
-
+        /* */
         private void RefreshService(ICollection dataSource) {
             SetDataSource(dataSource);
             SetStatus(dataSource);

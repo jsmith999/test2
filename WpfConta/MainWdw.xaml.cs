@@ -17,6 +17,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Conta.UiController.Model.Reports;
 
 namespace WpfConta {
     /// <summary>
@@ -128,9 +129,13 @@ namespace WpfConta {
         }
 
         void Report_Click(object sender, RoutedEventArgs e) {
+            // TODO : move the report to the controller
+            /*
             Mouse.OverrideCursor = Cursors.Wait;
             // TODO : start animation
             this.controller.ExecuteReport((sender as MenuItem).Header as string);
+            /* */
+            ShowDemoReport();
         }
 
         public void ShowReport(string contents) {
@@ -278,6 +283,9 @@ namespace WpfConta {
 
             var selection = customControl == null ? null : customControl.SelectedItem as UiBase;
             AppServices.Instance.DataViewSource.Post(new DataViewParameter(bo, selection));
+
+            // hack:
+            SetReports(bo.Name == "Projects" ? new[] { "Budget" } : new string[0]);
         }
 
         private void ChangeMainControl(DataViewParameter info) {
@@ -309,18 +317,29 @@ namespace WpfConta {
         }
         #endregion
 
+        private void ShowDemoReport() {
+            if (UiProject.Service == null) UiProject.InitService();
+            var reportCtrl = new WpfConta.FlowReports.FlowReport {
+                Title = "Project budgets by categories",
+                ColName1 = "Project name",
+                ColName2 = "Budget",
+                DataContext = ProjectCategorySplit.GetData(/* TODO : filter*/),
+            };
+            //this.MainContent.Content = reportCtrl;
+            reportCtrl.ShowDialog();
+        }
     }
 
     public static class CustomCommands {
         public static readonly RoutedUICommand Back = new RoutedUICommand
-                (
-                        "_Back",
-                        "BackName",
-                        typeof(CustomCommands),
-                        new InputGestureCollection(){
-                            new KeyGesture(Key.B, ModifierKeys.Alt),
-                        }
-                );
+            (
+                "_Back",
+                "BackName",
+                typeof(CustomCommands),
+                new InputGestureCollection(){
+                    new KeyGesture(Key.B, ModifierKeys.Alt),
+                }
+            );
 
         //Define more commands here, just like the one above
     }

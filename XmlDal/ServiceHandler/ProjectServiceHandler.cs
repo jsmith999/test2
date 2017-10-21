@@ -40,7 +40,7 @@ namespace XmlDal.ServiceHandler {
                 item.Address = addressServiceHandler.FromKey(item.AddressKey);
             item.Receivable = (string)row[7];
             item.AgeOfReceivable = (string)row[8];
-            item.ClientKey = (int)row[9];
+            item.ClientId = (int)row[9];
             //if (item.ClientKey != 0)
             //    item.Client = clientServiceHandler.FromKey(item.ClientKey);
         }
@@ -61,7 +61,7 @@ namespace XmlDal.ServiceHandler {
             row[6] = item.AddressKey;
             row[7] = item.Receivable;
             row[8] = item.AgeOfReceivable;
-            row[9] = item.ClientKey;
+            row[9] = item.ClientId;
         }
 
         protected override Project DoCreate() {
@@ -70,7 +70,7 @@ namespace XmlDal.ServiceHandler {
             // defaults
             result.StatusKey = 0;
             result.AddressKey = 0;
-            result.ClientKey = 0;
+            result.ClientId = 0;
 
             return result;
         }

@@ -1,0 +1,94 @@
+﻿<Window x:Class="WpfConta.FlowReports.FlowReport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:waf="clr-namespace:Waf.BookLibrary.Reporting.Presentation.Controls"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:WpfConta.FlowReports"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        mc:Ignorable="d" 
+        d:DesignHeight="300" d:DesignWidth="300" 
+        ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+        Width="8.5in" Height="11in">
+
+    <Window.Resources>
+        <local:ProjectDistributionByCategoryChartDataConverter x:Key="ProjectDistributionByCategoryChartDataConverter"/>
+    </Window.Resources>
+
+    <FlowDocument x:Name="theFlowDocument" PageWidth="8.5in" PageHeight="11in" 
+                  PagePadding="0.5in" ColumnGap="0" ColumnWidth="7.5in">
+        <Table BorderThickness="1" BorderBrush="Aqua" FontSize="12" LineStackingStrategy="BlockLineHeight">
+            <TableRowGroup>
+                <TableRow Foreground="#365F91" FontSize="12" FontWeight="Bold">
+                    <TableCell>
+                        <Paragraph>
+                            <Run Text="["/>
+                            <Run Text="{Binding Title, RelativeSource={RelativeSource AncestorType=local:FlowReport}}"/>
+                            <Run Text="]"/>
+                        </Paragraph>
+                    </TableCell>
+                    <TableCell TextAlignment="Right">
+                        <Paragraph>
+                            <Run Text="[count:"/>
+                            <Run Text="{Binding ElementName=theFlowDocument, Path=DataContext.Count, Mode=OneWay}"/>
+                            <Run Text="]"/>
+                        </Paragraph>
+                    </TableCell>
+                </TableRow>
+            </TableRowGroup>
+            <Table.Columns>
+                <TableColumn Name="leftCol" />
+                <!--<TableColumn Name="rightCol" Background="LightCyan" DataContext="{Binding LastName}"/>-->
+            </Table.Columns>
+        </Table>
+        <waf:BindableTable ItemsSource="{Binding ElementName=theFlowDocument, Path=DataContext}" 
+                           CellSpacing="0" BorderBrush="#FF4F81BD" BorderThickness="1,1,0,0">
+            <waf:BindableTable.Columns>
+                <TableColumn Width="Auto"/>
+                <TableColumn Width="Auto"/>
+                <TableColumn Width="Auto"/>
+            </waf:BindableTable.Columns>
+            <waf:BindableTable.HeaderRowGroup>
+                <TableRowGroup Foreground="White" Background="#FF4F81BD">
+                    <TableRow>
+                        <TableCell Padding="4,2" BorderBrush="#FF4F81BD" BorderThickness="0,0,1,1">
+                            <Paragraph>
+                                <Run Text="{Binding ColName1, RelativeSource={RelativeSource AncestorType=local:FlowReport}}"/>
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell Padding="4,2" BorderBrush="#FF4F81BD" BorderThickness="0,0,1,1">
+                            <Paragraph>
+                                <Run Text="{Binding ColName2, RelativeSource={RelativeSource AncestorType=local:FlowReport}}"/>
+                            </Paragraph>
+                        </TableCell>
+                    </TableRow>
+                </TableRowGroup>
+            </waf:BindableTable.HeaderRowGroup>
+            <waf:BindableTable.ItemTemplate>
+                <DataTemplate>
+                    <waf:ContentElement>
+                        <TableRow>
+                            <TableCell Padding="4,2" BorderBrush="#FF4F81BD" BorderThickness="0,0,1,1">
+                                <Paragraph>
+                                    <Run Text="{Binding Name, Mode=OneTime}"/>
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell Padding="4,2" BorderBrush="#FF4F81BD" BorderThickness="0,0,1,1">
+                                <Paragraph>
+                                    <Run Text="{Binding Budget, Mode=OneTime}"/>
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell Padding="4,2" BorderBrush="#FF4F81BD" BorderThickness="0,0,1,1">
+                                <BlockUIContainer>
+                                    <lvc:PieChart Height="200" Background="Azure"
+                                                  LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}"
+                                                  Series="{Binding Budgets, Mode=OneWay, Converter={StaticResource ProjectDistributionByCategoryChartDataConverter}}"/>
+                                </BlockUIContainer>
+                            </TableCell>
+                        </TableRow>
+                    </waf:ContentElement>
+                </DataTemplate>
+            </waf:BindableTable.ItemTemplate>
+        </waf:BindableTable>
+    </FlowDocument>
+</Window>

@@ -94,6 +94,7 @@
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="Controller\MasterDetailController.cs" />
     <Compile Include="Model\BaseUiService.cs" />
+    <Compile Include="Model\Reports\ProjectCategorySplit.cs" />
     <Compile Include="Model\UiAddress.cs" />
     <Compile Include="Model\UiAttach.cs" />
     <Compile Include="Model\UiClient.cs" />

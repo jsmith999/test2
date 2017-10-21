@@ -1,6 +1,7 @@
 ﻿using Conta.Dal;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Conta.UiController.Controller {
     public interface IBaseCustomController {
@@ -45,5 +46,6 @@ namespace Conta.UiController.Controller {
         //void SetSelection(IUiBase item);
         //void SetRowStatus(int oldSelectionIndex, RowStatus lockStatus);
         MessageActions ShowMessage(string title, string message, MessageActions action);
+        //void SetReports(IEnumerable<string> reports);
     }
 }

@@ -7,12 +7,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Conta.Model {
-    public partial class UiNote : UiBase {
+    public partial class UiPhoneType : UiBase {
         #region Service
         private static TheService service;
-
+        
         public static IDataClientService Service { get { return service; } }
-
+        
         public static void InitService() {
             if (service != null)
                 service = null; //Service.Dispose();
@@ -20,41 +20,30 @@ namespace Conta.Model {
         }
         #endregion
 
-        internal readonly Note original;
+        internal readonly PhoneType original;
 
-        public UiNote(Note original)
-            : base() {
+        public UiPhoneType(PhoneType original) :base() {
             this.original = original;
         }
 
+        [StringLength(20)]
         [Required()]
-        [Browsable(false)]
-        public int Id { get { return original.Id; } }
-
-        [StringLength(100)]
         public string Description {
             get { return original.Description; }
             set { SetProp(original.Description, value, v => original.Description = v, "Description"); }
-        }
-
-        [StringLength(1000000)]
-        [Required()]
-        public string Contents {
-            get { return original.Contents; }
-            set { SetProp(original.Contents, value, v => original.Contents = v, "Contents"); }
-        }
+ }
 
         public override IDataClientService GetService() { return Service; }
 
         #region service implementation
-        class TheService : BaseUiService<Note, UiNote> {
+        class TheService : BaseUiService<PhoneType, UiPhoneType> {
 
-            internal TheService() : base(XmlDal.DataContext.Notes, new KeyValuePair<string, Type>[] { /*add forward refs here*/ }) { }
+            internal TheService() : base(XmlDal.DataContext.PhoneTypes, new KeyValuePair<string, Type>[]{ /*add forward refs here*/ }) { }
 
-            protected override Note GetOriginal(UiNote item) { return item.original; }
+            protected override PhoneType GetOriginal(UiPhoneType item) { return item.original; }
 
-            protected override UiNote Create(Note original) { return new UiNote(original); }
+            protected override UiPhoneType Create(PhoneType original) { return new UiPhoneType(original); }
         }
         #endregion
-    }
+}
 }

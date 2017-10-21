@@ -7,34 +7,34 @@
           <xs:element name='Project'>
             <xs:complexType>
               <xs:sequence>
-                <xs:element name='Id' type='xs:int'/>
-                <xs:element name="Name">
+                <xs:element name='id' type='xs:int'/>
+                <xs:element name='name'>
                   <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                      <xs:maxLength value="100" />
+                    <xs:restriction base='xs:string'>
+                      <xs:maxLength value='100' />
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
-                <xs:element name='Price' type='xs:float'/>
-                <xs:element name='Start_date' type='xs:dateTime' />
-                <xs:element name='End_date' type='xs:dateTime' />
-                <xs:element name='StatusKey' type='xs:int'/>
-                <xs:element name='AddressKey' type='xs:int'/>
-                <xs:element name='Receivable'>
+                <xs:element name='price' type='xs:float'/>
+                <xs:element name='start_date' type='xs:dateTime' />
+                <xs:element name='end_date' type='xs:dateTime' />
+                <xs:element name='status_id' type='xs:int'/>
+                <xs:element name='address_id' type='xs:int'/>
+                <xs:element name='receivable'>
                   <xs:simpleType>
                     <xs:restriction base='xs:string'>
                       <xs:maxLength value='20' />
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
-                <xs:element name='AgeOfReceivable'>
+                <xs:element name='age_receivable'>
                   <xs:simpleType>
                     <xs:restriction base='xs:string'>
                       <xs:maxLength value='20' />
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
-                <xs:element name="ClientKey" type="xs:int"/>
+                <xs:element name='client_id' type='xs:int'/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -43,39 +43,39 @@
     </xs:element>
   </xs:schema>
   <Project>
-    <Id>1234</Id>
-    <Name>Bathroom renovation</Name>
-    <Price>7500</Price>
-    <Start_date>2017-01-01T00:00:00</Start_date>
-    <End_date>2017-01-31T00:00:00</End_date>
-    <StatusKey>0</StatusKey>
-    <AddressKey>1</AddressKey>
-    <Receivable>1234.56</Receivable>
-    <AgeOfReceivable/>
-    <ClientKey>1</ClientKey>
+    <id>1234</id>
+    <name>Bathroom renovation</name>
+    <price>7500</price>
+    <start_date>2017-01-01T00:00:00</start_date>
+    <end_date>2017-01-31T00:00:00</end_date>
+    <status_id>0</status_id>
+    <address_id>1</address_id>
+    <receivable>1234.56</receivable>
+    <age_receivable/>
+    <client_id>1</client_id>
   </Project>
   <Project>
-    <Id>2345</Id>
-    <Name>IR defect detection</Name>
-    <Price>75</Price>
-    <Start_date>2017-02-01T00:00:00</Start_date>
-    <End_date>2017-02-28T00:00:00</End_date>
-    <StatusKey>1</StatusKey>
-    <AddressKey>2</AddressKey>
-    <Receivable>2345.67</Receivable>
-    <AgeOfReceivable/>
-    <ClientKey>2</ClientKey>
+    <id>2345</id>
+    <name>IR defect detection</name>
+    <price>75</price>
+    <start_date>2017-02-01T00:00:00</start_date>
+    <end_date>2017-02-28T00:00:00</end_date>
+    <status_id>1</status_id>
+    <address_id>2</address_id>
+    <receivable>2345.67</receivable>
+    <age_receivable/>
+    <client_id>2</client_id>
   </Project>
   <Project>
-    <Id>3456</Id>
-    <Name>Windows replacement</Name>
-    <Price>17500</Price>
-    <Start_date>2017-03-01T00:00:00</Start_date>
-    <End_date>2017-03-31T00:00:00</End_date>
-    <StatusKey>2</StatusKey>
-    <AddressKey>3</AddressKey>
-    <Receivable>3456.78</Receivable>
-    <AgeOfReceivable/>
-    <ClientKey>3</ClientKey>
+    <id>3456</id>
+    <name>Windows replacement</name>
+    <price>17500</price>
+    <start_date>2017-03-01T00:00:00</start_date>
+    <end_date>2017-03-31T00:00:00</end_date>
+    <status_id>2</status_id>
+    <address_id>3</address_id>
+    <receivable>3456.78</receivable>
+    <age_receivable/>
+    <client_id>3</client_id>
   </Project>
 </NewDataSet>
