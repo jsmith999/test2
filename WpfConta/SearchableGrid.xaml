@@ -2,11 +2,17 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:conv="clr-namespace:WpfConta.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dg="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
+
+    <UserControl.Resources>
+        <conv:CountToVisibility x:Key="CountToVisibility"/>
+        <conv:IsNullConverter x:Key="IsNullConverter"/>
+    </UserControl.Resources>
+
     <DockPanel LastChildFill="True">
         <Grid Name="SearchContainer" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -20,7 +26,8 @@
                     <TextBlock FontSize="16" FontWeight="Bold"> +</TextBlock>
                     <!-- TODO : add visibility -->
                 </Button>
-                <Button Name="DelItem" Margin="5,2" Width="20" ToolTip="Delete selected line" Click="DelItem_Click">
+                <Button Name="DelItem" Margin="5,2" Width="20" ToolTip="Delete selected line" Click="DelItem_Click"
+                        IsEnabled="{Binding ElementName=theGrid, Path=SelectedItem, Converter={StaticResource IsNullConverter}, ConverterParameter=1}">
                     <TextBlock FontSize="16" FontWeight="Bold"> -</TextBlock>
                     <!-- TODO : add visibility -->
                 </Button>
@@ -58,23 +65,40 @@
         </Grid>
 
         <!-- DisplayMemberPath="Value" -->
-        <ListView Name="ForwardList" DockPanel.Dock="Right" ItemsSource="{Binding ForwardLinks}"  Margin="2" SelectionMode="Single" IsTextSearchEnabled="False">
-            <ListView.ItemTemplate>
-                <ItemContainerTemplate>
-                    <Button Content="{Binding Key}" Tag="{Binding Value}" Click="ForwardList_Selection_Click"/>
-                </ItemContainerTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <!-- Visibility="{Binding ElementName=ForwardList, Path=Items, Mode=OneWay, NotifyOnSourceUpdated=True, Converter={StaticResource CountToVisibility}}" -->
+        <StackPanel DockPanel.Dock="Right">
+            <StackPanel.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ForwardLinks.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
+            <ListView Name="ForwardList" Margin="2" SelectionMode="Single" IsTextSearchEnabled="False"
+                      ItemsSource="{Binding ForwardLinks, Mode=OneWay, NotifyOnSourceUpdated=True}">
+                <ListView.ItemTemplate>
+                    <ItemContainerTemplate>
+                        <Button Content="{Binding Key}" Tag="{Binding Value}" Click="ForwardList_Selection_Click"/>
+                    </ItemContainerTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
 
         <Border Name="DetailBorder" DockPanel.Dock="Bottom">
-            <Grid Name="DetailsGrid" AutomationProperties.Name="DetailsGrid" Margin="2" />
+            <Grid Name="DetailsGrid" AutomationProperties.Name="DetailsGrid" Margin="2" HorizontalAlignment="Stretch" />
         </Border>
+        <!--<Grid Name="DetailsGrid" DockPanel.Dock="Bottom" Margin="2" HorizontalAlignment="Stretch" />-->
+
         <dg:DataGrid Name="theGrid" AutoGenerateColumns="True" DockPanel.Dock="Left" MinRowHeight="20" 
-                                     ItemsSource="{Binding .,  ValidatesOnDataErrors=True}" SelectionChanged="theGrid_SelectionChanged"
-                                     AutoGeneratingColumn="theGrid_AutoGeneratingColumn"
-                                     ClipToBounds="False" IsTabStop="True" IsTextSearchEnabled="True" 
-                                     SelectionMode="Single" CanUserResizeRows="False" IsReadOnly="False" 
-                                     RowDetailsVisibilityMode="Collapsed" AlternatingRowBackground="Azure">
+                     ItemsSource="{Binding .,  ValidatesOnDataErrors=True}" SelectionChanged="theGrid_SelectionChanged"
+                     AutoGeneratingColumn="theGrid_AutoGeneratingColumn"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ClipToBounds="False" IsTabStop="True" IsTextSearchEnabled="True" 
+                     SelectionMode="Single" CanUserResizeRows="False" IsReadOnly="False" 
+                     RowDetailsVisibilityMode="Collapsed" AlternatingRowBackground="Azure">
             <DataGrid.ItemBindingGroup>
                 <BindingGroup NotifyOnValidationError="True"/>
             </DataGrid.ItemBindingGroup>

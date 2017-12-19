@@ -22,6 +22,7 @@ namespace Conta.UiController.Controller {
 
         private IUiBase associatedParent;
         private IDisposable dataViewSourceHandler;
+        protected ICollection dataSource;
 
         public static ObservableCollection<UiProjectItemsCategory> ProjectData;
 
@@ -40,7 +41,8 @@ namespace Conta.UiController.Controller {
             dataViewSourceHandler = AppServices.Instance.DataViewSource.Register(DataViewSourceChanged);
         }
 
-        void view_AddBOItem(object sender, EventArgs e) { this.AddNew(); }
+        //void view_AddBOItem(object sender, EventArgs e) { this.AddNew(); }
+        protected virtual void view_AddBOItem(object sender, EventArgs e) { this.AddNew(); }
 
         void view_DelBOItem(object sender, EventArgs e) { this.DeleteSelection(); }
 
@@ -168,7 +170,7 @@ namespace Conta.UiController.Controller {
             // TODO : throw an exception
         }
 
-        public virtual void SelectionChanged(IUiBase item) {
+        protected virtual void SelectionChanged(IUiBase item) {
             if (service.SelectedItem == item) return;   // re-selected the same item
 
             var oldSelection = service.SelectedItem;
@@ -212,7 +214,7 @@ namespace Conta.UiController.Controller {
 
         public void Search(string searchValue) {
             //this.SearchValue = searchValue;
-            var dataSource = service.GetList(GetListParent(), searchValue);
+            this.dataSource = service.GetList(GetListParent(), searchValue);
             RefreshService(dataSource);
         }
 
@@ -221,6 +223,12 @@ namespace Conta.UiController.Controller {
             //if (header == "Budgets")
             //    view.ShowReport(new BudgetReport().Create());
         }
+
+        public virtual void Save() {
+            foreach (UiBase item in this.dataSource)
+                if (item.IsDirty)
+                    item.Update();
+        }
         #endregion
 
         protected void DataViewSourceChanged(DataViewParameter parameter) {
@@ -228,7 +236,8 @@ namespace Conta.UiController.Controller {
                 this.service = AppServices.Instance.GetDataService(parameter.BusinessObject.UiDataType);
                 CurrentType = parameter.BusinessObject.UiDataType;
                 //this.associatedParent = parameter.Filter;
-                view.GridDataSource = this.service.GetList();
+                this.dataSource = this.service.GetList();
+                view.GridDataSource = this.dataSource;
                 if (parameter.Filter != null)
                     SetChildFilter(parameter.Filter);
             } else {
@@ -256,7 +265,7 @@ namespace Conta.UiController.Controller {
             service = newService;
             service.UpdateStatus += service_UpdateStatus;
             //view.SetDetail(dataType);/* no need : detail items bound directly to grid's selection */
-            var dataSource = service.GetList(GetListParent());
+            dataSource = service.GetList(GetListParent());
             RefreshService(dataSource);
             RaisePropertyChanged("ForwardLinks");
             HasParent = parent != null;
@@ -326,7 +335,7 @@ namespace Conta.UiController.Controller {
             return true;
         }
 
-        private void RaisePropertyChanged(string propName) {
+        public void RaisePropertyChanged(string propName) {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
         }

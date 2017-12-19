@@ -25,7 +25,7 @@ namespace Conta.UiController.Model.Reports {
                 foreach (UiProjectCategory cat in UiProjectCategory.Service.GetList()) {
                     var budget = new CategoryBudget();
                     budget.CategoryName = cat.Name;
-                    foreach (var catItem in (UiProjectItemDetail.Service as UiProjectItemDetail.ProjectItemDetailService).GetList(prj.Id, cat.Key))
+                    foreach (var catItem in (UiProjectItemDetail.Service as UiProjectItemDetail.TheService).GetList(prj.Id, cat.Key))
                         budget.Value += catItem.Value;
 
                     if (budget.Value != 0d)

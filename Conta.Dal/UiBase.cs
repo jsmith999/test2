@@ -11,6 +11,7 @@ namespace Conta.Dal {
         bool IsDirty { get; }
 
         bool Update();
+        IDataClientService GetService();
         void RaisePropertyChanged(string propName);
     }
 

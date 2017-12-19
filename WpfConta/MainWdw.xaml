@@ -4,7 +4,7 @@
     xmlns:primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
     xmlns:dg="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
     xmlns:local="clr-namespace:WpfConta"
-    Title="Conta" Height="500" Width="600">
+    Title="Conta" Height="700" Width="600">
 
     <Window.Resources>
         <!--<Style TargetType="DataGridCell">
@@ -48,22 +48,16 @@
             </MenuItem>
         </Menu>
 
-        <local:ButtonBreadcrumbs DockPanel.Dock="Top" x:Name="BreadCrumbs"/>
-        
-        <!-- dont : IsHitTestVisible="False" -->
-        <TabControl Name="FunctionTab" BorderThickness="0" Focusable="False" 
-                    HorizontalContentAlignment="Stretch" Padding="0" 
-                    ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectedIndex="0" VerticalContentAlignment="Stretch" >
-            <TabControl.BorderBrush>
-                <SolidColorBrush Color="Transparent" />
-            </TabControl.BorderBrush>
-            <TabItem Name="DataTab">
-                <DockPanel Name="DataContent" LastChildFill="True" Visibility="Visible">
-                    <Border Name="DetailBorder" DockPanel.Dock="Bottom">
-                        <Grid Name="DetailsGrid" AutomationProperties.Name="DetailsGrid" Margin="2" /><!-- TODO : remove -->
-                    </Border>
+        <!--<local:ButtonBreadcrumbs DockPanel.Dock="Top" x:Name="BreadCrumbs"/>-->
 
-                    <!--<DockPanel LastChildFill="True">
+        <!-- dont : IsHitTestVisible="False" -->
+        <DockPanel Name="DataContent" LastChildFill="True" Visibility="Visible">
+            <Border Name="DetailBorder" DockPanel.Dock="Bottom">
+                <Grid Name="DetailsGrid" AutomationProperties.Name="DetailsGrid" Margin="2" />
+                <!-- TODO : remove -->
+            </Border>
+
+            <!--<DockPanel LastChildFill="True">
                     <Grid Name="SearchContainer" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -74,11 +68,15 @@
                         <StackPanel Orientation="Horizontal">
                             <Button Name="AddItem" Margin="5,2" Width="20" ToolTip="Add a new line" Click="AddItem_Click">
                                 <TextBlock FontSize="16" FontWeight="Bold"> +</TextBlock>
-                                --><!-- TODO : add visibility --><!--
+                                -->
+            <!-- TODO : add visibility -->
+            <!--
                             </Button>
                             <Button Name="DelItem" Margin="5,2" Width="20" ToolTip="Delete selected line" Click="DelItem_Click">
                                 <TextBlock FontSize="16" FontWeight="Bold"> -</TextBlock>
-                                --><!-- TODO : add visibility --><!--
+                                -->
+            <!-- TODO : add visibility -->
+            <!--
                             </Button>
 
                         </StackPanel>
@@ -113,7 +111,9 @@
                         </CheckBox>
                     </Grid>
 
-                        --><!-- DisplayMemberPath="Value" --><!--
+                        -->
+            <!-- DisplayMemberPath="Value" -->
+            <!--
                         <ListView Name="ForwardList" DockPanel.Dock="Right" ItemsSource="{Binding ForwardLinks}"  Margin="2" SelectionMode="Single" IsTextSearchEnabled="False">
                             <ListView.ItemTemplate>
                                 <ItemContainerTemplate>
@@ -133,18 +133,8 @@
                             </DataGrid.ItemBindingGroup>
                         </dg:DataGrid>
                     </DockPanel>-->
-                    <ContentControl x:Name="MainContent"/>
-                </DockPanel>
-            </TabItem>
 
-            <TabItem Name="ReportTab" >
-                <DockPanel Name="ReportContent" LastChildFill="True" VerticalAlignment="Stretch">
-                    <StackPanel DockPanel.Dock="Bottom">
-                        <Button Name="CloseReportBtn" Margin="5" HorizontalAlignment="Right" Click="CloseReportBtn_Click">_Close</Button>
-                    </StackPanel>
-                    <WebBrowser Name="ReportArea" />
-                </DockPanel>
-            </TabItem>
-        </TabControl>
+            <Frame x:Name="MainContent"/>
+        </DockPanel>
     </DockPanel>
 </Window>

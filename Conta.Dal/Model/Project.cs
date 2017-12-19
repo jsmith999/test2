@@ -24,8 +24,9 @@ namespace Conta.DAL.Model {
 
         public string Receivable { get; set; }
         public string AgeOfReceivable { get; set; }
-[ForeignKey("Client")]
-public int ClientId { get; set; }
+        
+        [ForeignKey("Client")]  // TODO : generate
+        public int ClientId { get; set; }
         //public Conta.DAL.Model.Client Client { get; set; }
     }
 }

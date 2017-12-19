@@ -46,46 +46,7 @@ namespace Conta.UiController.Controller {
         void SetReports(IEnumerable<string> headers);
         void ShowReport(string contents);
     }
-    /*
-    public class MainController : BaseController {
-        private new IDetailCustomView view;
 
-        public MainController(IMainView view) : base(view) { }
-
-        public IDataController DetailController { get; private set; }
-
-        //public override void SetDataType(Type type, UiBase parent) {
-        //    if (type == typeof(UiProject)) {
-        //        DetailController = new BaseController(view);
-        //        DetailController.SetViewDataSource = x => this.view.GridDetailSource = x;
-        //        DetailController.SetDataType(typeof(UiProjectItemsCategory), parent);
-        //    } else {
-        //        if (DetailController != null)
-        //            view.GridDetailSource = null;
-        //        DetailController = null;
-        //    }
-
-        //    base.SetDataType(type, parent);
-        //}
-
-        public override void SelectionChanged(IUiBase item) {
-            if (DetailController != null) {
-                // TODO : make it more generic
-                Debug.Assert(this.CurrentType == typeof(UiProject));
-                if (item == null)
-                    view.GridDetailSource = null;   // hide details when not selected
-                else
-                    DetailController.SetChildFilter(item);
-            }
-
-            base.SelectionChanged(item);
-        }
-
-        protected override void SetDataSource(ICollection dataSource) {
-            view.GridDataSource = dataSource;
-        }
-    }
-    /* */
     public class MainController : IDataController {
         protected readonly IMainView view;
         private IDataClientService service;
@@ -130,62 +91,11 @@ namespace Conta.UiController.Controller {
         public event PropertyChangedEventHandler PropertyChanged;
 
         #region API
-        private void RefreshData() {
-            SetDataSource(service.GetList(GetListParent(), searchValue));
-        }
-
         public bool CanClose() {
             CloseCurrentService();
             return true;
         }
-#if(false)
-        public virtual void SetDataType(Type type, UiBase parent) {
-            CloseCurrentService();
 
-            CurrentType = type;
-            this.associatedParent = parent;
-
-            //if (type == typeof(UiClient)) {
-            //    UiClient.InitService();
-            //    SelectService(UiClient.Service, typeof(UiClient), parent);
-            //    return;
-            //}
-
-            //if (type == typeof(UiEmployee)) {
-            //    UiEmployee.InitService();
-            //    SelectService(UiEmployee.Service, typeof(UiEmployee), parent);
-            //    return;
-            //}
-
-            //if (type == typeof(UiProjectItemsCategory)) {
-            //    // only as DetailController
-            //    UiProjectItemsCategory.InitService();
-            //    SelectService(UiProjectItemsCategory.Service, typeof(UiProjectItemsCategory), parent);
-            //    return;
-            //}
-
-            //if (type == typeof(UiProject)) {
-            //    UiProject.InitService();
-            //    SelectService(UiProject.Service, typeof(UiProject), parent, new[] { "Budgets" });
-            //    return;
-            //}
-
-            //if (type == typeof(UiMaterial)) {
-            //    UiMaterial.InitService();
-            //    SelectService(UiMaterial.Service, typeof(UiMaterial), parent);
-            //    return;
-            //}
-
-            //if (type == typeof(UiProjectCategory)) {
-            //    UiProjectCategory.InitService();
-            //    SelectService(UiProjectCategory.Service, typeof(UiProjectCategory), parent);
-            //    return;
-            //}
-
-            // TODO : throw an exception
-
-        }
-#endif
         public virtual void SelectionChanged(IUiBase item) {
             if (service.SelectedItem == item) return;   // re-selected the same item
 

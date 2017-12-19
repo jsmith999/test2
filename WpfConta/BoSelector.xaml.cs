@@ -24,6 +24,9 @@ namespace WpfConta {
         public BoSelector() {
             InitializeComponent();
             mainGrid.MainGridSelectionChanged += mainGrid_MainGridSelectionChanged;
+            mainGrid.AddBOItem += (s, e) => { if (AddBOItem != null) AddBOItem(s, e); };
+            mainGrid.DelBOItem += (s, e) => { if (DelBOItem != null) DelBOItem(s, e); };
+            mainGrid.StartSearch += (s, e) => { if (StartSearch != null) StartSearch(s, e); };
             DataContextChanged += BoSelector_DataContextChanged;
         }
 
@@ -36,7 +39,8 @@ namespace WpfConta {
             controller = e.NewValue as EditableListSelectorController;
             Debug.WriteLine("controller is " + (controller == null ? "" : "not ") + "null");
             //mainGrid.DataContext = controller;
-            controller.SelectionChanged(null);
+            //controller.SelectionChanged(null);
+            mainGrid_MainGridSelectionChanged(sender, null);
         }
 
         private void OkBtn_Click(object sender, RoutedEventArgs e) {

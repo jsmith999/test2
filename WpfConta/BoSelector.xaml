@@ -4,9 +4,7 @@
         xmlns:local="clr-namespace:WpfConta"
         xmlns:conv="clr-namespace:WpfConta.Converters"
         Title="BoSelector" Height="500" Width="500">
-    <Window.Resources>
-        <conv:IsNullConverter x:Key="IsNullConverter"/>
-    </Window.Resources>
+
     <DockPanel LastChildFill="true">
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
@@ -19,7 +17,7 @@
                     <Style TargetType="Button">
                         <Setter Property="IsEnabled" Value="True"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=mainGrid, Path=SelectedRows, NotifyOnSourceUpdated=True}" Value="0">
+                            <DataTrigger Binding="{Binding ElementName=boSel_mainGrid, Path=SelectedRows, NotifyOnSourceUpdated=True}" Value="0">
                                 <Setter Property="IsEnabled" Value="False"/>
                             </DataTrigger>
                         </Style.Triggers>

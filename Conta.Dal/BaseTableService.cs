@@ -20,7 +20,9 @@ namespace Conta.DAL {
         public virtual IEnumerable<TTable> GetList(LambdaExpression where = null, string toSearch = null) {
             Debug.Write("DoGetList");
             try {
-                return DoGetList(where, toSearch) as IEnumerable<TTable>;
+                var result = DoGetList(where, toSearch);
+                Debug.Write(" " + typeof(TTable).Name + ":" + result.Count());
+                return result;
             } finally {
                 Debug.WriteLine(".");
             }

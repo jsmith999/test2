@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Conta.UiController.Model.Reports;
+using System.Reflection;
 
 namespace WpfConta {
     /// <summary>
@@ -32,6 +33,7 @@ namespace WpfConta {
         public MainWdw() {
             InitializeComponent();
 
+            this.Loaded += MainWdw_Loaded;
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open,
                 Back_Executed, Back_CanExecute));
 
@@ -44,12 +46,20 @@ namespace WpfConta {
             InitMenu();
         }
 
+        void MainWdw_Loaded(object sender, RoutedEventArgs e) {
+            this.MainContent.Navigating += MainContent_Navigating;
+        }
+
+        void MainContent_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e) {
+            //Debug.WriteLine("Navigating to " + e.Uri);
+        }
+
         #region IMainView Members
         public object GridDataSource {
             set {
-                /*
-                MainContent.MainGrid.DataContext = value;   // TODO : replace by another property
-                /* */
+                if (customControl == null) return;
+                Debug.WriteLine("Count:" + (value as IList).Count);
+                customControl.GridDataSource = value;
             }
         }
 
@@ -82,8 +92,8 @@ namespace WpfConta {
         }
 
         public void SetSelection(IUiBase item) {
-            //MainContent.MainGrid.SelectedItem = item;   // TODO : add property
-            customControl.SelectedItem = item;
+            if (customControl != null)
+                customControl.SelectedItem = item;
         }
 
         public void SetDetailSelection(IUiBase item) {
@@ -140,9 +150,10 @@ namespace WpfConta {
 
         public void ShowReport(string contents) {
             // TODO : add transition & index constants
-            FunctionTab.SelectedIndex = 1;
 
-            ReportArea.NavigateToString(contents);
+            var browser = new WebBrowser { Name = "ReportArea" };   // TODO : add report name as suffix
+            browser.NavigateToString(contents);
+            MainContent.NavigationService.Navigate(browser);
             // TODO : end animation
             Mouse.OverrideCursor = null;
         }
@@ -159,55 +170,10 @@ namespace WpfConta {
             if (!e.Cancel) this.dataViewSourceSink.Dispose();
             base.OnClosing(e);
         }
-        /*
-        private void JumpToClient_Click(object sender, RoutedEventArgs e) {
-            RaiseJumpTo(typeof(UiClient));
-        }
 
-        private void JumpToEmployee_Click(object sender, RoutedEventArgs e) {
-            RaiseJumpTo(typeof(UiEmployee));
-        }
-
-        private void JumpToProject_Click(object sender, RoutedEventArgs e) {
-            RaiseJumpTo(typeof(UiProject));
-        }
-
-        private void JumpToMaterials_Click(object sender, RoutedEventArgs e) {
-            RaiseJumpTo(typeof(UiMaterial));
-        }
-
-        private void JumpToProjectCategories_Click(object sender, RoutedEventArgs e) {
-            RaiseJumpTo(typeof(UiProjectCategory));
-        }
-        
-        private void RaiseJumpTo(Type type, UiBase parent = null) {
-            //controller.SetDataType(type, parent);
-            AppServices.Instance.DataViewSource.Post(new DataViewParameter(null,parent));
-        }
-/* */
         private void Back_CanExecute(object sender, CanExecuteRoutedEventArgs e) { e.CanExecute = controller.HasParent; }
 
         private void Back_Executed(object sender, ExecutedRoutedEventArgs e) { /*!controller.GoBack();*/ }
-
-        private void theGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            //foreach (var col in theGrid.Columns)
-            //    Debug.WriteLine(col.Header + ":" + (e.RemovedItems.Count > 0 ? e.RemovedItems[0].GetType().Name : "?"));
-            //Debug.WriteLine("selection changed " + (e.Source == MainContent.MainGrid) + " / " + (sender == MainContent.MainGrid));
-            //Debug.WriteLine("call SelectionChanged");
-            this.controller.SelectionChanged(e.RemovedItems.Count == 1 ?
-                e.RemovedItems[0] as UiBase :
-                null);
-            /*
-            Debug.WriteLine("wait..." + Thread.CurrentThread.ManagedThreadId);
-            try {
-                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { })); // DoEvents
-                //Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => Debug.WriteLine("DoEvents " + Thread.CurrentThread.ManagedThreadId))); // DoEvents
-            } catch (Exception ex) {
-                Debug.WriteLine("DoEvents " + ex);
-            }
-            Debug.WriteLine("done..." + Thread.CurrentThread.ManagedThreadId);
-            /* */
-        }
 
         private void projectGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             /* !
@@ -250,7 +216,7 @@ namespace WpfConta {
 
         private void CloseReportBtn_Click(object sender, RoutedEventArgs e) {
             // TODO : add transition
-            FunctionTab.SelectedIndex = 0;
+            MainContent.NavigationService.GoBack();
         }
         #endregion
 
@@ -282,7 +248,7 @@ namespace WpfConta {
             //    customControl.Dispose();
 
             var selection = customControl == null ? null : customControl.SelectedItem as UiBase;
-            AppServices.Instance.DataViewSource.Post(new DataViewParameter(bo, selection));
+            AppServices.Instance.DataViewSource.Post(new DataViewParameter(bo, null/*selection*/));
 
             // hack:
             SetReports(bo.Name == "Projects" ? new[] { "Budget" } : new string[0]);
@@ -292,8 +258,11 @@ namespace WpfConta {
             var bo = info.BusinessObject;
             // TODO : use info.Filter
 
-            if (customControl != null)
-                (customControl.DataContext as IBaseCustomController).CanClose();
+            if (customControl != null) {
+                var oldController = customControl.DataContext as IBaseCustomController;
+                oldController.CanClose();
+                oldController.Save();
+            }
 
             // TODO : generalize this
             object crtControl = bo.UiDataType == typeof(UiProject) ?
@@ -310,10 +279,13 @@ namespace WpfConta {
                 customController = new DefaultCustomController(crtControl as IBaseCustomView) as IBaseCustomController;
             }
             customControl.DataContext = customController;
-            //customController.SetChildFilter(bo.Selection as IUiBase);     // too early!
 
-            //RaiseJumpTo(bo.UiDataType, theGrid.SelectedItem as UiBase);
-            this.MainContent.Content = crtControl as UserControl;
+            var pageWrap = new Page {
+                Title = "[" + info.BusinessObject.UiDataType.Name.Substring(2) + "]",   // this will apear in the navigator's list
+                Content = crtControl,
+                Name = "pageWrap",
+            };
+            this.MainContent.NavigationService.Navigate(pageWrap);
         }
         #endregion
 
@@ -325,8 +297,14 @@ namespace WpfConta {
                 ColName2 = "Budget",
                 DataContext = ProjectCategorySplit.GetData(/* TODO : filter*/),
             };
-            //this.MainContent.Content = reportCtrl;
-            reportCtrl.ShowDialog();
+
+            var scroller = new ScrollViewer {
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                Content = reportCtrl,
+            };
+            this.MainContent.Content = scroller;
+            //reportCtrl.ShowDialog();
         }
     }
 

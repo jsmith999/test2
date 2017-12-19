@@ -1,4 +1,5 @@
-﻿using Conta.Dal;
+﻿#define ShowDetailCtrl
+using Conta.Dal;
 using Conta.Model;
 using Conta.UiController;
 using Conta.UiController.Controller;
@@ -15,19 +16,20 @@ namespace WpfConta {
     /// <summary>
     /// Interaction logic for SearchableGrid.xaml
     /// </summary>
-    public partial class SearchableGrid : UserControl, IBaseCustomView,INotifyPropertyChanged {
+    public partial class SearchableGrid : UserControl, IBaseCustomView, INotifyPropertyChanged {
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register(
             "SelectedItem", typeof(object),
             typeof(SearchableGrid),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, SelectedItemPropertyChanged));
+
         public static readonly DependencyProperty SelectionCountProperty =
             DependencyProperty.Register(
             "SelectionCount", typeof(int),
             typeof(SearchableGrid),
             new PropertyMetadata(0, SelectionCountPropertyChanged));
 
-        private static void SelectedItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e){
+        private static void SelectedItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             //d.SetValue(e.Property,e.NewValue);
             //typeof(SearchableGrid).GetProperty(e.Property.Name).SetValue(d,e.NewValue);
             (d as SearchableGrid).SelectedItem = e.NewValue;
@@ -39,8 +41,9 @@ namespace WpfConta {
 
         private IBaseCustomController controller;
         private string timestamp;
-        //private int selectedRows;     // not used
+#if(ShowDetailCtrl)
         private DetailGridBuilder detailCtrl;   // TODO
+#endif
 
         public SearchableGrid() {
             InitializeComponent();
@@ -50,20 +53,26 @@ namespace WpfConta {
 
         void SearchableGrid_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
             controller = e.NewValue as IBaseCustomController;
-            RaisePropertyChangedEvent("ForwardLinks");
+            //RaisePropertyChangedEvent("ForwardLinks");    // NO
+            // too early
+            //if (controller != null) controller.RaisePropertyChanged("ForwardLinks");
+            //Debug.WriteLine(controller.ForwardLinks.Count());
         }
 
         #region IBaseCustomView
         public DataGrid MainGrid { get { return this.theGrid; } }
+
         public string SearchValue { get { return this.SearchTextBox.Text; } }
-        public object SelectedItem { 
+
+        public object SelectedItem {
             get { return this.theGrid.SelectedItem; }
-            set { 
+            set {
                 this.theGrid.SelectedItem = value;
                 RaisePropertyChangedEvent("SelectedItem");
                 RaisePropertyChangedEvent("SelectedRows");
             }
         }
+
         public int SelectedRows {
             get { return this.theGrid.SelectedItems.Count; }
             //set {
@@ -74,18 +83,19 @@ namespace WpfConta {
 
         public object GridDataSource {
             set {
-                // TODO : add detailCtrl
+#if(ShowDetailCtrl)
                 if (this.detailCtrl != null) this.detailCtrl.Dispose();
                 foreach (var item in (value as IList)) {
-                    this.detailCtrl = DetailGridBuilder.Build(this.DetailsGrid, this.DetailBorder, item.GetType(), this.theGrid);
+                    this.detailCtrl = DetailGridBuilder.Build(this.DetailsGrid, null/*this.DetailBorder*/, item.GetType(), this.theGrid);
                     break;
                 }
+#endif
 
                 this.theGrid.DataContext = value;
             }
         }
 
-        public bool GridReadOnly { set { this.theGrid.IsReadOnly  =value; } }
+        public bool GridReadOnly { set { this.theGrid.IsReadOnly = value; } }
 
         public MessageActions ShowMessage(string title, string message, MessageActions action) {
             var msgButton =
@@ -116,7 +126,7 @@ namespace WpfConta {
                 e.Key == System.Windows.Input.Key.Enter)
                 //if (!string.IsNullOrEmpty(this.SearchValue.Text))
                 //controller.Search(this.MainContent.SearchValue);
-                if (StartSearch != null) 
+                if (StartSearch != null)
                     StartSearch(this, e);
         }
 
@@ -130,7 +140,9 @@ namespace WpfConta {
             if (MainGridSelectionChanged != null)
                 MainGridSelectionChanged(this, selection);
 
-            this.detailCtrl.Rearrange();
+#if(ShowDetailCtrl)
+            this.detailCtrl.Rearrange(DetailsGrid.ActualWidth);
+#endif
         }
 
         //private void ForwardList_Selection_Click(object sender, RoutedEventArgs e) { if (ForwardListSelected != null) ForwardListSelected((e.OriginalSource as Button).Tag as Type, EventArgs.Empty); }
@@ -169,7 +181,7 @@ namespace WpfConta {
                         DisplayMemberPath = lookupAttribute.DisplayMember,
                         //IsAutoGenerated = true,
                         SelectedValuePath = lookupAttribute.LookupMember,
-                        SelectedValueBinding =  GetBinding(e.PropertyName),
+                        SelectedValueBinding = GetBinding(e.PropertyName),
                     };
                     //lookupColumn.ItemsSource = GetService(lookupAttribute.DataSource);
                     if (UiProjectStatus.Service == null) UiProjectStatus.InitService();
@@ -216,7 +228,7 @@ namespace WpfConta {
             if (PropertyChanged == null) return;
 
             Debug.WriteLine("changed " + propName);
-            PropertyChanged(this, new PropertyChangedEventArgs(propName)); 
+            PropertyChanged(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

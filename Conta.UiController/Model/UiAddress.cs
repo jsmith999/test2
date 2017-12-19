@@ -11,7 +11,7 @@ namespace Conta.Model {
         #region Service
         private static TheService service;
 
-        public static IDataClientService Service { get { return service; } }
+        public static IDataClientService Service { get { return service = (service ?? new TheService()); } }
 
         public static void InitService() {
             if (service != null)

@@ -12,7 +12,7 @@ namespace Conta.Model {
         #region Service
         private static TheService service;
 
-        public static IDataClientService Service { get { return service; } }
+        public static IDataClientService Service { get { return service = (service ?? new TheService()); } }
 
         public static void InitService() {
             if (service != null)
@@ -63,7 +63,7 @@ namespace Conta.Model {
 
         public Address Address {
             get { return original.Address; }
-            set { SetProp(original.Address, value, v => { original.Address = v; original.AddressId = v.Id; }, "Address"); }
+            set { SetProp(original.Address, value, v => { original.Address = v; original.AddressId = v == null ? 0 : v.Id; }, "Address"); }
         }
 
         [StringLength(100)]

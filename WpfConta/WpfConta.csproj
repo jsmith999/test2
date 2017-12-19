@@ -97,10 +97,9 @@
     <Compile Include="BoSelector.xaml.cs">
       <DependentUpon>BoSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ButtonBreadcrumbs.xaml.cs">
-      <DependentUpon>ButtonBreadcrumbs.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Converters\CountToVisibility.cs" />
     <Compile Include="Converters\IsNullConverter.cs" />
+    <Compile Include="Converters\ToStringConverter.cs" />
     <Compile Include="FlowReports\BindableTable.cs" />
     <Compile Include="FlowReports\ContentElement.cs" />
     <Compile Include="FlowReports\FlowReport.xaml.cs">
@@ -118,10 +117,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BoSelector.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ButtonBreadcrumbs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,6 +169,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

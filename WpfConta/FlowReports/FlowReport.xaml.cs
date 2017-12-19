@@ -17,7 +17,7 @@ namespace WpfConta.FlowReports {
     /// <summary>
     /// Interaction logic for FlowReport.xaml
     /// </summary>
-    public partial class FlowReport : Window {
+    public partial class FlowReport : UserControl {
         public FlowReport() {
             InitializeComponent();
 
@@ -26,6 +26,7 @@ namespace WpfConta.FlowReports {
             ColName2 = "Budget";
         }
 
+        public string Title { get; set; }
         public string ColName1 { get; set; }
         public string ColName2 { get; set; }
     }

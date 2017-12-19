@@ -73,7 +73,7 @@ namespace XmlDal {
             var newRow = table.NewRow();
             // deal with non-nulls
             foreach (DataColumn col in table.Columns) {
-                if (col.DefaultValue != null)
+                if (col.DefaultValue != null && !(col.DefaultValue is DBNull))
                     newRow[col] = col.DefaultValue;
 
                 if (!col.AllowDBNull && newRow[col] is DBNull) {

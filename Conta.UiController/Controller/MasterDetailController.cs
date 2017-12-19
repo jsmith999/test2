@@ -1,13 +1,8 @@
-﻿using Conta.Dal;
-using Conta.DAL;
+﻿using Conta.DAL;
 using Conta.Model;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace Conta.UiController.Controller {
     public class MasterDetailController : DefaultCustomController {
@@ -28,7 +23,7 @@ namespace Conta.UiController.Controller {
         public IBaseCustomController MainController { get; set; }
 
         // TODO: test 
-        public override void SelectionChanged(Dal.IUiBase item) {
+        protected override void SelectionChanged(Dal.IUiBase item) {
             if (item is UiProject) {
                 // master
                 base.SelectionChanged(item);
@@ -37,13 +32,36 @@ namespace Conta.UiController.Controller {
                     detailService.GetList(item);
             } else {
                 // detail
-                var detailItem = item as UiProjectItemsCategory;    // could be material
-                if (detailItem != null && detailItem.IsDirty)
-                    UiProjectItemsCategory.Service.Update(detailItem);
+                if (item == null) return;
+                if (item is UiProjectItemsCategory)
+                    CategoryUpdate(item as UiProjectItemsCategory);
+                else
+                    if (item.IsDirty)
+                        item.Update();
             }
         }
 
-        public void AddMaterial(object inserted) {
+        public override void Save() {
+            foreach (UiProject project in base.dataSource) {
+                if (project.IsDirty)
+                    project.Update();
+
+                foreach (UiProjectItemsCategory item in detailService.GetList(project)) 
+                    CategoryUpdate(item);
+            }
+        }
+
+        private static void CategoryUpdate(UiProjectItemsCategory item) {
+            if (item.IsDirty)
+                item.Update();
+
+            foreach (var detail in item.Details)
+                if (detail.IsDirty)
+                    detail.Update();
+        }
+        protected override void view_AddBOItem(object sender, EventArgs e) { this.AddMaterial(sender); }
+
+        private void AddMaterial(object inserted) {
             var newMaterial = inserted as UiMaterial;
             UiProjectItemDetail itemDetail = UiProjectItemDetail.Service.Create() as UiProjectItemDetail;
             var project = view.SelectedItem as UiProject;
@@ -52,9 +70,9 @@ namespace Conta.UiController.Controller {
             foreach (UiProjectItemsCategory category in detailService.GetList(view.SelectedItem as UiProject))
                 if (category.Key == newMaterial.Category) {
                     itemDetail.Material = newMaterial;
-                    category.Details.Add(itemDetail);
-                    UiProjectItemDetail.Service.Update(itemDetail);
-                    return;     // TODO : refresh
+                    //UiProjectItemDetail.Service.Update(itemDetail);
+                    itemDetail.Update();
+                    return;
                 }
         }
     }

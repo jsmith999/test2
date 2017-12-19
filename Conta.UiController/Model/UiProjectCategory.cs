@@ -9,16 +9,16 @@ using System.ComponentModel.DataAnnotations;
 namespace Conta.Model {
     public class UiProjectCategory : UiBase {
         #region Service
-        private static ThisService service;
+        private static TheService service;
 
-        public static IDataClientService Service { get { return service; } }
+        public static IDataClientService Service { get { return service = (service ?? new TheService()); } }
 
-        public static IDataClientService ServiceCreator() { return service = new ThisService(); }
+        public static IDataClientService ServiceCreator() { return service = new TheService(); }
 
         public static void InitService() {
             if (service != null)
                 service = null; //Service.Dispose();
-            service = new ThisService();
+            service = new TheService();
         }
         #endregion
 
@@ -49,9 +49,9 @@ namespace Conta.Model {
         public override IDataClientService GetService() { return Service; }
 
         #region service implementation
-        class ThisService : BaseUiService<ProjectItemCategory, UiProjectCategory> {
+        class TheService : BaseUiService<ProjectItemCategory, UiProjectCategory> {
 
-            internal ThisService() : base(XmlDal.DataContext.ProjectItemsCategory, new KeyValuePair<string, Type>[] { }) { }
+            internal TheService() : base(XmlDal.DataContext.ProjectItemsCategory, new KeyValuePair<string, Type>[] { }) { }
 
             protected override ProjectItemCategory GetOriginal(UiProjectCategory item) { return item.original; }
 

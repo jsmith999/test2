@@ -10,10 +10,11 @@ namespace Conta.UiController.Controller {
         Action<ICollection> SetViewDataSource { get; set; }
         bool IsGlobalSearch { get; set; }
         bool HasParent { get; set; }
+        IEnumerable<KeyValuePair<string, Type>> ForwardLinks { get; }
 
         UiBase AddNew();
         void DeleteSelection();
-        void SelectionChanged(IUiBase item);
+        //void SelectionChanged(IUiBase item);
         void SetChildFilter(IUiBase item);
         void Search(string searchValue);
         void ExecuteReport(string header);
@@ -21,6 +22,9 @@ namespace Conta.UiController.Controller {
         bool CanClose();
         void SetDataType(Type type, UiBase parent);
         void CloseCurrentService();
+
+        void Save();
+        void RaisePropertyChanged(string propName);
     }
 
     public interface IDetailCustomView : IBaseCustomView {

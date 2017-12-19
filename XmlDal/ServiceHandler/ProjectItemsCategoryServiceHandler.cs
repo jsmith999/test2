@@ -32,7 +32,7 @@ namespace XmlDal.ServiceHandler {
             item.Key = (int)row[0];
             item.Name = row[1] as string;
             item.IsDeleted = (bool)row[2];
-            item.Observations = row[3] as string;   // TODO : do not save to category
+            item.Observations = row[3] as string;
         }
 
         protected override void ModelToData(ProjectItemCategory item, System.Data.DataRow row) {

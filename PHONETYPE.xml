@@ -7,7 +7,7 @@
           <xs:element name='PhoneType'>
             <xs:complexType>
               <xs:sequence>
-<xs:element name='id' type='xs:int'/>
+                <xs:element name='id' msdata:ReadOnly='true' msdata:AutoIncrement='true' type='xs:int' />
 <xs:element name='description'>
                   <xs:simpleType>
                     <xs:restriction base='xs:string'>

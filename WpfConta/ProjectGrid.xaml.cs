@@ -32,6 +32,9 @@ namespace WpfConta {
 
             DataContextChanged += SearchableGrid_DataContextChanged;
             this.mainGrid.MainGridSelectionChanged += mainGrid_MainGridSelectionChanged;
+            mainGrid.AddBOItem += (s, e) => { if (AddBOItem != null) AddBOItem(s, e); };
+            mainGrid.DelBOItem += RaiseDelBOItem;
+            mainGrid.StartSearch += (s, e) => { if (StartSearch != null) StartSearch(s, e); };
         }
 
         #region IDetailCustomView
@@ -85,11 +88,16 @@ namespace WpfConta {
         }
 
         void mainGrid_MainGridSelectionChanged(object sender, Conta.Dal.UiBase e) {
-            controller.SelectionChanged(e);
+            //controller.SelectionChanged(e);
+            if (MainGridSelectionChanged != null)
+                MainGridSelectionChanged(sender, e);
         }
 
         private void detailGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            controller.SelectionChanged(e.RemovedItems.Count == 1 ?
+            //controller.SelectionChanged(e.RemovedItems.Count == 1 ?
+            //    e.RemovedItems[0] as UiBase :
+            //    null);
+            mainGrid_MainGridSelectionChanged(sender, e.RemovedItems.Count == 1 ?
                 e.RemovedItems[0] as UiBase :
                 null);
         }
@@ -113,9 +121,77 @@ namespace WpfConta {
         private void AddChild_Click(object sender, RoutedEventArgs e) {
             var dlg = new BoSelector();
             var childController = new EditableListSelectorController(dlg, typeof(UiMaterial));
-            childController.Setter = controller.AddMaterial;
+            //childController.Setter = controller.AddMaterial;
+            childController.Setter = AddMaterial;
             dlg.DataContext = childController;
             dlg.ShowDialog();
+
+            // refresh
+            // get row statuses
+            var gridStatus = new Queue<bool>();
+            GetGridStatus(detailGrid, gridStatus);
+            //DumpVisualTree(detailGrid);
+            var mainSelection = mainGrid.SelectedItem;
+            mainGrid.SelectedItem = null;
+            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Background, new Action(delegate { }));
+            mainGrid.SelectedItem = mainSelection;
+            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Background, new Action(delegate { }));
+            // set row statuses
+            SetGridStatus(detailGrid, gridStatus);
+        }
+
+        private void GetGridStatus(FrameworkElement root, Queue<bool> status) {
+            if (root.Name == "btnDetails")
+                status.Enqueue(((root as Button).Content as string) == "-");
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(root); i++) {
+                var child = VisualTreeHelper.GetChild(root, i) as FrameworkElement;
+                if (child != null)
+                    GetGridStatus(child, status);
+            }
+        }
+
+        private void SetGridStatus(FrameworkElement root, Queue<bool> status) {
+            if (status.Count == 0) return;
+
+            if (root.Name == "btnDetails") {
+                if (status.Dequeue())
+                    (root as Button).RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            }
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(root); i++) {
+                var child = VisualTreeHelper.GetChild(root, i) as FrameworkElement;
+                if (child != null)
+                    SetGridStatus(child, status);
+            }
+        }
+
+        private void DumpVisualTree(FrameworkElement element) {
+            Debug.Write(element.Name + ":" + element.GetType().Name);
+            if (element is Button) Debug.Write("[" + (element as Button).Content + "]");
+            else if (element is TextBox) Debug.Write("[" + (element as TextBox).Text + "]");
+            else if (element is TextBlock) Debug.Write("[" + (element as TextBox).Text + "]");
+            Debug.WriteLine("");
+
+            Debug.Indent();
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++) {
+                var child = VisualTreeHelper.GetChild(element, i) as FrameworkElement;
+                if (child != null)
+                    DumpVisualTree(child);
+            }
+            Debug.Unindent();
+        }
+
+        private void AddMaterial(object material) {
+            RaiseAddBOItem(material);
+        }
+
+        private void RaiseAddBOItem(object sender) {
+            RaiseAddBOItem(sender, EventArgs.Empty);
+        }
+
+        private void RaiseAddBOItem(object sender, EventArgs e) {
+            if (AddBOItem != null)
+                AddBOItem(sender, e);
         }
 
         private void DelChild_Click(object sender, RoutedEventArgs e) {
@@ -129,9 +205,14 @@ namespace WpfConta {
                 projectItem.SelectedDetail == null ||
                 selected == null)
                 return;
-            
+
             projectItem.Details.Remove(selected);
             UiProjectItemDetail.Service.Delete(selected);
+        }
+
+        private void RaiseDelBOItem(object sender, EventArgs e) {
+            if (DelBOItem != null)
+                DelBOItem(sender, e);
         }
     }
 }

@@ -14,14 +14,14 @@ using Conta.UiController.Controller;
 namespace Conta.Model {
     public class UiMaterial : UiBase {
         #region Service
-        private static ThisService service;
+        private static TheService service;
 
-        public static IDataClientService Service { get { return service; } }
+        public static IDataClientService Service { get { return service = (service ?? new TheService()); } }
 
         public static void InitService() {
             if (service != null)
                 service = null; //Service.Dispose();
-            service = new ThisService();
+            service = new TheService();
         }
         #endregion
 
@@ -49,7 +49,7 @@ namespace Conta.Model {
             set { SetProp(original.UnitPrice, value, x => original.UnitPrice = x, "UnitPrice"); }
         }
         // TODO ref to ProjectItemCategory
-        [LookupBoundProperty(/*DataSource*/"UiProjectCategory", /*DisplayMember*/"Name", /*ValueMember*/"Category", /*LookupMember*/"Id")]
+        [LookupBoundProperty(/*DataSource*/"UiProjectCategory", /*DisplayMember*/"Description", /*ValueMember*/"Category", /*LookupMember*/"Id")]
         public int Category {
             get { return original.Category; }
             set { SetProp(original.Category, value, x => original.Category = x, "Category"); }
@@ -62,9 +62,9 @@ namespace Conta.Model {
         public override IDataClientService GetService() { return Service; }
 
         #region service implementation
-        class ThisService : BaseUiService<Material, UiMaterial> {
+        class TheService : BaseUiService<Material, UiMaterial> {
 
-            internal ThisService() : base(XmlDal.DataContext.Materials, new KeyValuePair<string, Type>[] { }) { }
+            internal TheService() : base(XmlDal.DataContext.Materials, new KeyValuePair<string, Type>[] { }) { }
 
             protected override Material GetOriginal(UiMaterial item) { return item.original; }
 

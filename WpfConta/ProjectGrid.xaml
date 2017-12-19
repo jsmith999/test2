@@ -95,9 +95,9 @@
                                        
                 <dg:DataGrid.RowDetailsTemplate>
                     <DataTemplate>
-                        <!-- -->
-                        <dg:DataGrid Name="CategoryDetailsGrid" ItemsSource="{Binding Details, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" 
-                                     AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single"
+                            <!-- CanUserAddRows="False" ValidatesOnDataErrors=True, -->
+                        <dg:DataGrid Name="CategoryDetailsGrid" ItemsSource="{Binding Details, NotifyOnValidationError=True, NotifyOnSourceUpdated=True}" 
+                                     AutoGenerateColumns="False" CanUserDeleteRows="False" SelectionMode="Single"
                                      SelectedItem="{Binding SelectedDetail, UpdateSourceTrigger=PropertyChanged}">
                             <dg:DataGrid.Columns>
                                 <dg:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" IsReadOnly="True" />

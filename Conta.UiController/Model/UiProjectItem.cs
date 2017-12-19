@@ -1,4 +1,4 @@
-﻿#define DetailsAsBindingList
+﻿#define DetailsAsBindingList_
 using Conta.Dal;
 using Conta.DAL;
 using Conta.DAL.Model;
@@ -15,14 +15,14 @@ using XmlDal.ServiceHandler;
 namespace Conta.Model {
     public class UiProjectItemsCategory : UiBase {
         #region Service
-        private static ProjectItemsCategoryService service;
+        private static TheService service;
 
-        public static IDataClientService Service { get { return service; } }
+        public static IDataClientService Service { get { return service = (service ?? new TheService()); } }
 
         public static void InitService() {
             if (service != null)
                 service = null; //Service.Dispose();
-            service = new ProjectItemsCategoryService();
+            service = new TheService();
         }
         #endregion
 
@@ -121,7 +121,7 @@ namespace Conta.Model {
                 return details;
             }
 
-            private set {
+            /*private*/ set {
                 if (details != null) {
                     details.CollectionChanged -= details_CollectionChanged;
                     foreach (var item in details)
@@ -171,8 +171,8 @@ namespace Conta.Model {
         public override IDataClientService GetService() { return Service; }
 
         #region service implementation
-        class ProjectItemsCategoryService : BaseUiService<ProjectItemCategory, UiProjectItemsCategory> {
-            internal ProjectItemsCategoryService() : base(XmlDal.DataContext.ProjectItemsCategory, new KeyValuePair<string, Type>[] { }) { }
+        class TheService : BaseUiService<ProjectItemCategory, UiProjectItemsCategory> {
+            internal TheService() : base(XmlDal.DataContext.ProjectItemsCategory, new KeyValuePair<string, Type>[] { }) { }
 
             public override int GetIndex(IUiBase item) {
                 if (item is UiProjectItemsCategory)
@@ -188,8 +188,8 @@ namespace Conta.Model {
                 var result = base.GetList(parent);
                 var projectKey = (parent as UiProject).Id;
                 foreach (UiProjectItemsCategory item in cache)
-                    item.Details = (UiProjectItemDetail.Service as UiProjectItemDetail.ProjectItemDetailService).GetList(projectKey, item.original.Key);   // TODO : pass the project!
-                    //item.Details = new ObservableCollection<UiProjectItemDetail>((UiProjectItemDetail.Service as UiProjectItemDetail.ProjectItemDetailService).GetList(projectKey, item.original.Key));   // TODO : pass the project!
+                    //item.Details = (UiProjectItemDetail.Service as UiProjectItemDetail.TheService).GetList(projectKey, item.original.Key);   // TODO : pass the project!
+                    item.Details = new ObservableCollection<UiProjectItemDetail>((UiProjectItemDetail.Service as UiProjectItemDetail.TheService).GetList(projectKey, item.original.Key));   // TODO : pass the project!
                 return result;
             }
 
@@ -214,7 +214,17 @@ namespace Conta.Model {
 
     public class UiProjectItemDetail : UiBase {
         #region Service
-        public static IDataClientService Service = new ProjectItemDetailService();
+        private static TheService service;
+
+        public static IDataClientService Service { get { return service = (service ?? new TheService()); } }
+
+        public static IDataClientService ServiceCreator() { return service = new TheService(); }
+
+        public static void InitService() {
+            if (service != null)
+                service = null; //Service.Dispose();
+            service = new TheService();
+        }
         #endregion
 
         public readonly ProjectItemDetailMaterial original;
@@ -280,8 +290,8 @@ namespace Conta.Model {
         public override IDataClientService GetService() { return Service; }
 
         #region service implementation
-        internal class ProjectItemDetailService : BaseUiService<ProjectItemDetailMaterial, UiProjectItemDetail> {
-            internal ProjectItemDetailService() : base(XmlDal.DataContext.ProjectItemDetail, new KeyValuePair<string, Type>[] { }) { }
+        internal class TheService : BaseUiService<ProjectItemDetailMaterial, UiProjectItemDetail> {
+            internal TheService() : base(XmlDal.DataContext.ProjectItemDetail, new KeyValuePair<string, Type>[] { }) { }
 
             public BindingList<UiProjectItemDetail> GetList(int project, int category) {
                 var originals = (this.service as ProjectItemMaterialServiceHandler).GetList(project, category);
